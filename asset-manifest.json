@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/tasks-dashboard.github.io/static/css/main.d4ebc075.chunk.css",
+    "main.js": "/tasks-dashboard.github.io/static/js/main.a9263638.chunk.js",
+    "main.js.map": "/tasks-dashboard.github.io/static/js/main.a9263638.chunk.js.map",
+    "runtime-main.js": "/tasks-dashboard.github.io/static/js/runtime-main.1e9c7317.js",
+    "runtime-main.js.map": "/tasks-dashboard.github.io/static/js/runtime-main.1e9c7317.js.map",
+    "static/css/2.0a9ec390.chunk.css": "/tasks-dashboard.github.io/static/css/2.0a9ec390.chunk.css",
+    "static/js/2.0987ab33.chunk.js": "/tasks-dashboard.github.io/static/js/2.0987ab33.chunk.js",
+    "static/js/2.0987ab33.chunk.js.map": "/tasks-dashboard.github.io/static/js/2.0987ab33.chunk.js.map",
+    "index.html": "/tasks-dashboard.github.io/index.html",
+    "static/css/2.0a9ec390.chunk.css.map": "/tasks-dashboard.github.io/static/css/2.0a9ec390.chunk.css.map",
+    "static/css/main.d4ebc075.chunk.css.map": "/tasks-dashboard.github.io/static/css/main.d4ebc075.chunk.css.map",
+    "static/js/2.0987ab33.chunk.js.LICENSE.txt": "/tasks-dashboard.github.io/static/js/2.0987ab33.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1e9c7317.js",
+    "static/css/2.0a9ec390.chunk.css",
+    "static/js/2.0987ab33.chunk.js",
+    "static/css/main.d4ebc075.chunk.css",
+    "static/js/main.a9263638.chunk.js"
+  ]
+}
