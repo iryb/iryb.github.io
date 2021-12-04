@@ -26,15 +26,17 @@ export default function Header() {
 
   return (
     <>
-      <Row className="header align-items-center p-2 mb-4">
-        <div className="col-sm-6">
-          <h1 className="h2"><Link className="text-decoration-none transition-300" to="/">Tasks Dashboard</Link></h1>
-        </div>
-        <div className="col-sm-6">
-          {user && <p className="mb-0">Welcome, {user.email}! <Button onClick={handleLogout}>Log out</Button> <Link className="transition-300" to="/update-profile">Update profile</Link></p>}
-          {!user && <p className="mb-0"><Link className="transition-300" to="/login">Log in</Link> or <Link className="transition-300" to="/signup">Sign up</Link></p>}
-        </div>
-      </Row>
+      <div className="py-2 mb-4">
+        <Row className="header align-items-center">
+          <div className="col-sm-4">
+            <h1 className="h2"><Link className="text-decoration-none transition-300" to="/">Tasks Dashboard</Link></h1>
+          </div>
+          <div className="col-sm-8 header-text">
+            {user && <p className="mb-0">Welcome, {user.email}! <Button onClick={handleLogout}>Log out</Button> <Link className="transition-300" to="/update-profile">Update profile</Link></p>}
+            {!user && <p className="mb-0"><Link className="transition-300" to="/login">Log in</Link> or <Link className="transition-300" to="/signup">Sign up</Link></p>}
+          </div>
+        </Row>
+      </div>
       {error && <Alert variant="danger">{error}</Alert>}
     </>
   )

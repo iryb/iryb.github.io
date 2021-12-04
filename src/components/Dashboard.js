@@ -21,6 +21,7 @@ export default function Dashboard() {
 
   const onDrop = (item, monitor, status) => {
     setStatus(item, status)
+    handleUpdateTasks()
   };
 
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);

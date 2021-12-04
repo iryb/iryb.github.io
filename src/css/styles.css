@@ -1,5 +1,11 @@
-.header {
-  background-color: #dddddd;
+.container {
+  max-width: 950px;
+}
+
+@media (min-width: 576px) {
+  .header-text {
+    text-align: right;
+  }
 }
 
 .card-container{
