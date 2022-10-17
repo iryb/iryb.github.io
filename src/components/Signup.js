@@ -1,7 +1,9 @@
 import React, {useRef, useState} from 'react'
 import {Form, Button, Card, Alert} from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 import { useAuth } from '../contexts/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom';
+import { login } from '../store/userSlice';
 
 export default function Signup() {
   const nameRef = useRef()
@@ -12,35 +14,50 @@ export default function Signup() {
   const { signup, createUserDoc } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e) {0
     e.preventDefault()
 
     if(passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError('Passwords do not match')
     }
 
-     try {
-      setError('')
-      setLoading(true)
+    try {
+      setError('');
+      setLoading(true);
+      // await signup(emailRef.current.value, passwordRef.current.value)
+      //   .then(registeredUser => {
+      //     createUserDoc(registeredUser.user.uid, roleRef.current.value, nameRef.current.value, emailRef.current.value)
+      //   })
+      //   .then(()=>{
+      //     setLoading(false)
+      //     navigate('/')
+      //   })
+      //   .catch(error=> {
+      //     const errorCode  = error.code;
+      //     const errorMessage = error.message;
+      //     if (errorCode === 'auth/weak-password') {
+      //       setError('The password is too weak.');
+      //     } else {
+      //       setError(errorMessage);
+      //     }
+      //   })
+
       await signup(emailRef.current.value, passwordRef.current.value)
         .then(registeredUser => {
           createUserDoc(registeredUser.user.uid, roleRef.current.value, nameRef.current.value, emailRef.current.value)
-        })
-        .then(()=>{
-          setLoading(false)
-          navigate('/')
-        })
-        .catch(error=> {
-          const errorCode  = error.code;
-          const errorMessage = error.message;
-          if (errorCode === 'auth/weak-password') {
-            setError('The password is too weak.');
-          } else {
-            setError(errorMessage);
-          }
-        })
+          .then(() => {
+            dispatch(login({
+              email: registeredUser.user.email,
+              uid: registeredUser.user.uid,
+              name: nameRef.current.value,
+            }));
+            navigate('/');
+          });
+        });
+
     } catch(err) {
       console.log(err.message)
       setError('Failed to create an account')

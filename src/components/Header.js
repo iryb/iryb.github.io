@@ -1,27 +1,19 @@
-import React, {useState, useEffect} from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import { Button, Alert, Row } from 'react-bootstrap'
+import React from 'react'
+import { Button, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from "../store/userSlice";
+import { auth } from "../firebase";
+import { selectUser } from "../store/userSlice";
 
 export default function Header() {
-  const { currentUser, logout } = useAuth()
-  const [user, setUser] = useState(currentUser)
-  const [error, setError] = useState('')
+  // const [error, setError] = useState('')
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
-  useEffect(()=> {
-    setUser(currentUser)
-  })
-
-  function handleLogout() {
-    setError('')
-    try {
-      logout().then(() => {
-        window.location.reload()
-      })
-      setUser(false)
-    } catch {
-      setError('Failed to log out')
-    }
+  const handleLogout = () => {
+    auth.signOut()
+    .then(() => dispatch(logout()));
   }
 
   return (
@@ -37,7 +29,7 @@ export default function Header() {
           </div>
         </Row>
       </div>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {/* {error && <Alert variant="danger">{error}</Alert>} */}
     </>
   )
 }

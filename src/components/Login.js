@@ -1,32 +1,35 @@
 import React, {useRef, useState} from 'react'
 import {Form, Button, Card, Alert} from 'react-bootstrap'
-import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { login } from "../store/userSlice";
+import { useDispatch } from 'react-redux';
 
 export default function Login() {
   const emailRef = useRef()
   const passwordRef = useRef()
-  const { login } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  async function handleSubmit(e) {
+ const handleLogin = (e) => {
     e.preventDefault()
 
     try {
       setError('')
       setLoading(true)
-      await login(emailRef.current.value, passwordRef.current.value).catch((error) => {
-        const errorCode  = error.code;
-        const errorMessage = error.message;
-        if (errorCode === 'auth/weak-password') {
-          setError('The password is too weak.');
-        } else {
-          setError(errorMessage);
-        }
+      signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
+      .then(user => {
+        dispatch(login({
+          email: user.email,
+          uid: user.uid,
+          name: user.name,
+        }));
+        console.log('login');
       })
-      navigate('/')
+      .then(() => navigate('/'));
     } catch {
       setError('Failed to log in')
     }
@@ -40,7 +43,7 @@ export default function Login() {
         <Card.Body>
           <h2 className="text-center">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleLogin}>
             <Form.Group className="mb-3" id="email">
               <Form.Label>Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" ref={emailRef} required />

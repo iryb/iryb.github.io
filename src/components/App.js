@@ -10,10 +10,31 @@ import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 import PrivateRoute from "./PrivateRoute"
 import Header from "./Header"
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import { useDispatch } from 'react-redux';
+import { login, logout } from "../store/userSlice";
 
 function App() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     document.title = "Tasks Dashboard"
+  }, []);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        dispatch(login({
+          email: user.email,
+          uid: user.uid,
+          name: user.name,
+        }));
+        console.log('app-js');
+      } else {
+        dispatch(logout());
+      }
+    })
   }, []);
 
   return (

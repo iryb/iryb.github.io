@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import { Button, Row } from 'react-bootstrap'
+import React, { useState } from 'react'
+// import { useAuth } from '../contexts/AuthContext'
+import { Row } from 'react-bootstrap'
 import Column from './Column'
 import TaskCard from './TaskCard'
 import { statuses } from '../data/index'
@@ -9,15 +9,18 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import {useTasks} from '../contexts/TasksContext'
 import AddTaskModal from './AddTaskModal' 
 import Task from './Task'
-import { AiOutlinePlusSquare } from "react-icons/ai"
+// import { AiOutlinePlusSquare } from "react-icons/ai"
+import { useSelector } from 'react-redux'
+import { selectUser } from '../store/userSlice'
+import Login from './Login'
 
 export default function Dashboard() {
-  const { currentUser, getUserNameById, currentUserAdmin, getUserRole } = useAuth()
-  const [user, setUser] = useState(currentUser)
+  // const { getUserNameById } = useAuth()
+  // const [user, setUser] = useState(currentUser)
   const { tasks, getTasks, setStatus } = useTasks() 
   const [currentTasks, setCurrentTasks] = useState(tasks)
-  const [userAdmin, setUserAdmin] = useState(currentUserAdmin)
-  const [loading, setLoading] = useState(false)
+  // const [userAdmin, setUserAdmin] = useState(currentUserAdmin)
+  // const [loading, setLoading] = useState(false)
 
   const onDrop = (item, monitor, status) => {
     setStatus(item, status)
@@ -27,26 +30,28 @@ export default function Dashboard() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [openedTask, setOpenedTask] = useState();
-  const [assignedUser, setAssignedUser] = useState();
+  // const [assignedUser, setAssignedUser] = useState();
   const [openedTaskStatus, setOpenedTaskStatus] = useState();
 
-  useEffect(() => {
-    if(currentUser) {
-      setLoading(true)
-      getUserRole(currentUser.uid).then(role => {
-        if(role === null) {
-          setUser(false)
-        }
-        if(role === 'admin') {
-          setUserAdmin(true)
-        } else {
-          setUserAdmin(false)
-        }
-      }).then(()=> {
-        setLoading(false)
-      })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(currentUser) {
+  //     setLoading(true)
+  //     getUserRole(currentUser.uid).then(role => {
+  //       if(role === null) {
+  //         setUser(false)
+  //       }
+  //       if(role === 'admin') {
+  //         setUserAdmin(true)
+  //       } else {
+  //         setUserAdmin(false)
+  //       }
+  //     }).then(()=> {
+  //       setLoading(false)
+  //     })
+  //   }
+  // }, [])
+
+  const user = useSelector(selectUser);
 
   const handleAddModalShow = () => {
     setShowAddTaskModal(!showAddTaskModal)
@@ -63,9 +68,9 @@ export default function Dashboard() {
       let taskId = e.target.parentNode.getAttribute("data-id")
       let task = tasks.find(item => item.id === taskId)
       if(task.assignedUserId) {
-        getUserNameById(task.assignedUserId).then((user) => {
-          setAssignedUser(user)
-        })
+        // getUserNameById(task.assignedUserId).then((user) => {
+        //   setAssignedUser(user)
+        // })
       }
 
       let status = statuses.find(item => item.status === task.status)
@@ -79,26 +84,27 @@ export default function Dashboard() {
     setShowTaskDetails(false)
   }
 
+  if (!user) return <Login />;
 
   return (
     <div>
-      {!loading && <>
+      {/* {!loading && <> */}
         <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} updateTasks={handleUpdateTasks}/>
         <Task show={showTaskDetails} 
           showTaskDetails={handleOpenTask} 
           closeTask={handleCloseTask}
           item={openedTask} 
-          assignedUser={assignedUser} 
+          // assignedUser={assignedUser} 
           handleUpdateTasks={handleUpdateTasks}
           color={openedTaskStatus}
-          admin={userAdmin}
+          // admin={userAdmin}
         />
         <Row className="mt-4">
           <DndProvider backend={HTML5Backend}>
-            {statuses.map((s, index) => {
+            {statuses.map((s) => {
               return (
                 <Column onDrop={onDrop} status={s.status} key={s.id}>
-                  {index===0 && userAdmin ? <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}><AiOutlinePlusSquare /></Button> : ''}
+                  {/* {index===0 && userAdmin ? <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}><AiOutlinePlusSquare /></Button> : ''} */}
                   <h3 className="h5 col-header text-center pb-1">{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</h3>
                   {currentTasks
                     .filter(i => i.status === s.status)
@@ -117,7 +123,7 @@ export default function Dashboard() {
             })}
           </DndProvider>
         </Row>
-      </>}
+      {/* </>} */}
     </div>
   )
 }
