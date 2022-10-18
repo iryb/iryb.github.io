@@ -1,0 +1,61 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  width: 14rem;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  background-color: #4e73df;
+  background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%);
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.navLink {
+  display: block;
+  padding: 1rem;
+  width: 14rem;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  svg {
+    color: #fff;
+    margin-right: 0.25rem;
+  }
+  span {
+    font-size: 0.875rem;
+  }
+}
+
+.sidebarBrand {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebarBrandText {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.sidebarDivider {
+  background-color: rgba(255,255,255,.60);
+  margin: 0 1rem 1rem;
+}
+
+.sidebarHeading {
+  color: rgba(255,255,255,.4);
+  padding: 0 1rem;
+  font-weight: 800;
+  font-size: .65rem;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .sidebar .nav-item .nav-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    width: 14rem;
+  }
+}
