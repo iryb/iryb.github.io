@@ -19,7 +19,7 @@ const Column = ({onDrop, children, status}) => {
       ref={drop}
       className="column col-md-3 py-2"
     >
-      <div className="p-3 h-100 position-relative" style={{backgroundColor: isOver ? '#ffff9494' : 'rgb(197 237 255 / 44%)' }}>
+      <div className="p-3 h-100 position-relative shadow card" style={{backgroundColor: isOver ? '#ffff9494' : '#fff' }}>
         {children}
         {canDrop ? 'Release to drop' : ''}
       </div>

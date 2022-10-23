@@ -1,0 +1,72 @@
+@import "@assets/css/variables.scss";
+
+.header {
+  padding: 0.5rem 1rem;
+  height: $header-height;
+}
+
+.searchBar {
+  display: flex;
+  width: 25rem;
+  input {
+    background-color: $light-gray;
+  }
+  button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.notificationsDropdown {
+
+}
+
+button.icon {
+  position: relative;
+  background-color: transparent !important;
+  border: none;
+  margin: 0 0.75rem;
+  padding: 0;
+  width: 2.25em;
+  &:hover {
+    border: none;
+  }
+  &:after {
+    display: none;
+  }
+  svg {
+    fill: $gray;
+  }
+  .counter {
+    position: absolute;
+    transform: scale(.7);
+    transform-origin: top right;
+    right: -3px;
+    margin-top: -0.25rem;
+  }
+}
+
+.userInfo {
+  background-color: transparent !important;
+  border: none !important;
+  &:after {
+    display: none !important;
+  }
+  span {
+    color: $text;
+    margin-right: 0.5rem;
+  }
+  img {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+  }
+}
+
+.userNav {
+  margin-top: 15px;
+  border-color: $light-gray;
+  hr {
+    background-color: $gray;
+  }
+}

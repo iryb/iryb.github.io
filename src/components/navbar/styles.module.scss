@@ -1,3 +1,5 @@
+@import "@assets/css/variables.scss";
+
 .navbar {
   display: flex;
   flex-direction: column;
@@ -30,6 +32,7 @@
 .sidebarBrand {
   color: #fff;
   text-decoration: none;
+  height: $header-height;
 }
 
 .sidebarBrandText {

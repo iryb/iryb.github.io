@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 const Navbar = () => {
   return (
     <ul className={styles.navbar} id="accordionSidebar">
-        <Link to="/" className={clsx(styles.sidebarBrand, "my-3 d-flex align-items-center justify-content-center")}>
+        <Link to="/" className={clsx(styles.sidebarBrand, "py-3 d-flex align-items-center justify-content-center")}>
           <div className="sidebar-brand-icon rotate-n-15">
             <i className="fas fa-laugh-wink"></i>
           </div>

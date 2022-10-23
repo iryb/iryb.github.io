@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 // import { useAuth } from '../contexts/AuthContext'
-import { Row } from 'react-bootstrap'
+import { Row, Button } from 'react-bootstrap'
 import Column from './Column'
 import TaskCard from './TaskCard'
 import { statuses } from '../data/index'
@@ -9,10 +9,11 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import {useTasks} from '../contexts/TasksContext'
 import AddTaskModal from './AddTaskModal' 
 import Task from './Task'
-// import { AiOutlinePlusSquare } from "react-icons/ai"
+import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector } from 'react-redux'
 import { selectUser } from '../store/userSlice'
-import Login from './Login'
+import Login from './sign/Login'
+import { InnerPageContainer } from './inner-page-container/InnerPageContainer'
 
 export default function Dashboard() {
   // const { getUserNameById } = useAuth()
@@ -87,7 +88,8 @@ export default function Dashboard() {
   if (!user) return <Login />;
 
   return (
-    <div>
+    <InnerPageContainer>
+      <h1 className="h3 mb-4">Dashboard</h1>
       {/* {!loading && <> */}
         <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} updateTasks={handleUpdateTasks}/>
         <Task show={showTaskDetails} 
@@ -104,7 +106,7 @@ export default function Dashboard() {
             {statuses.map((s) => {
               return (
                 <Column onDrop={onDrop} status={s.status} key={s.id}>
-                  {/* {index===0 && userAdmin ? <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}><AiOutlinePlusSquare /></Button> : ''} */}
+                  <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}><AiOutlinePlusSquare /></Button>
                   <h3 className="h5 col-header text-center pb-1">{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</h3>
                   {currentTasks
                     .filter(i => i.status === s.status)
@@ -124,6 +126,6 @@ export default function Dashboard() {
           </DndProvider>
         </Row>
       {/* </>} */}
-    </div>
+    </InnerPageContainer>
   )
 }

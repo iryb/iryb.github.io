@@ -1,9 +1,9 @@
 import React, {useRef, useState} from 'react'
 import {Form, Button, Card, Alert} from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
-import { useAuth } from '../contexts/AuthContext'
-import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../store/userSlice';
+// import { useDispatch } from 'react-redux'
+// import { useAuth } from '../../AuthContext'
+import { Link } from 'react-router-dom';
+// import { login } from '@store/userSlice';
 
 export default function Signup() {
   const nameRef = useRef()
@@ -11,11 +11,11 @@ export default function Signup() {
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
   const roleRef = useRef()
-  const { signup, createUserDoc } = useAuth()
+  // const { signup, createUserDoc } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
 
   async function handleSubmit(e) {0
     e.preventDefault()
@@ -27,36 +27,19 @@ export default function Signup() {
     try {
       setError('');
       setLoading(true);
+
       // await signup(emailRef.current.value, passwordRef.current.value)
       //   .then(registeredUser => {
       //     createUserDoc(registeredUser.user.uid, roleRef.current.value, nameRef.current.value, emailRef.current.value)
-      //   })
-      //   .then(()=>{
-      //     setLoading(false)
-      //     navigate('/')
-      //   })
-      //   .catch(error=> {
-      //     const errorCode  = error.code;
-      //     const errorMessage = error.message;
-      //     if (errorCode === 'auth/weak-password') {
-      //       setError('The password is too weak.');
-      //     } else {
-      //       setError(errorMessage);
-      //     }
-      //   })
-
-      await signup(emailRef.current.value, passwordRef.current.value)
-        .then(registeredUser => {
-          createUserDoc(registeredUser.user.uid, roleRef.current.value, nameRef.current.value, emailRef.current.value)
-          .then(() => {
-            dispatch(login({
-              email: registeredUser.user.email,
-              uid: registeredUser.user.uid,
-              name: nameRef.current.value,
-            }));
-            navigate('/');
-          });
-        });
+      //     .then(() => {
+      //       dispatch(login({
+      //         email: registeredUser.user.email,
+      //         uid: registeredUser.user.uid,
+      //         name: nameRef.current.value,
+      //       }));
+      //       navigate('/');
+      //     });
+      //   });
 
     } catch(err) {
       console.log(err.message)
