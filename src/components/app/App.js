@@ -11,7 +11,7 @@ import PrivateRoute from "../PrivateRoute"
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useDispatch } from 'react-redux';
-import { login, logout } from "../../store/userSlice";
+import { setUser } from "../../store/userSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,14 +23,11 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, user => {
       if (user) {
-        dispatch(login({
+        dispatch(setUser({
           email: user.email,
-          uid: user.uid,
-          name: user.displayName,
+          displayName: user.displayName,
+          photoURL: user.photoURL
         }));
-        console.log('app-js');
-      } else {
-        dispatch(logout());
       }
     })
   }, []);

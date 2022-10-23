@@ -1,9 +1,7 @@
 import React, {useRef, useState} from 'react'
 import {Form, Button, Card, Alert} from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import { auth } from '../../firebase';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { loginUser } from "../../store/userSlice";
+import { login } from "../../store/userSlice";
 import { useDispatch } from 'react-redux';
 
 export default function Login() {
@@ -20,28 +18,13 @@ export default function Login() {
     setError('');
     setLoading(true);
 
-    signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
-    .then(user => {
-      console.log(user);
-      dispatch(loginUser({
-        email: user.user.email,
-        uid: user.user.uid,
-        name: user.user.displayName,
-      }));
-      console.log('login');
-    })
+    dispatch(login({
+      email: emailRef.current.value,
+      password: passwordRef.current.value
+    }))
+    .unwrap()
     .then(() => navigate('/'))
     .catch(() => setError('Failed to log in'));
-
-    // dispatch(loginUser({
-    //   email: emailRef.current.value,
-    //   password: passwordRef.current.value
-    // }))
-    // .unwrap()
-    // .then(() => navigate('/'))
-    // .catch(() => setError('Failed to log in'));
-
-    setLoading(false)
   }
 
   return (

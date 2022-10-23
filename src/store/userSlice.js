@@ -1,4 +1,4 @@
-import { createSlice, createReducer, isAnyOf, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { app } from '../firebase';
 import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
@@ -8,58 +8,43 @@ const initialState = {
 
 const auth = getAuth(app);
 
-const loginUser = createAsyncThunk(
+const login = createAsyncThunk(
   'users/login',
-  async (email, password) => {
-    const { user } = await signInWithEmailAndPassword(auth, email, password);
-    return user;
+  async ({ email, password }) => {
+    const { displayName, photoURL } = await signInWithEmailAndPassword(auth, email, password);
+    return { displayName, email, photoURL };
   }
-)
+);
+
+const logout = createAsyncThunk(
+  'users/logout',
+  async () => {
+    await auth.signOut();
+  }
+);
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, action) => {
+    setUser: (state, action) => {
       state.user = action.payload;
-    },
-    logout: (state) => {
-      state.user = null;
-    },
+    }
   },
   extraReducers: (builder) => {
-    builder.addCase(loginUser.fulfilled, (state, action) => {
+    builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload;
+    }),
+    builder.addCase(logout.fulfilled, state => {
+      state.user = null;
     })
   },
 });
 
-const uReducer = createReducer(initialState, builder => {
-  builder
-    .addMatcher(
-      isAnyOf(
-        loginUser.fulfilled,
-      ),
-      (state, action) => {
-        state.user = action.payload;
-      }
-    )
-    .addMatcher(
-      isAnyOf(
-        loginUser.rejected,
-      ),
-      state => {
-        state.user = null;
-      }
-    );
-});
-
-export const { login, logout } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 
 export const selectUser = (state) => state.user;
 
 export default userSlice.reducer;
 
-export { loginUser };
-
-export { uReducer };
+export { login, logout };

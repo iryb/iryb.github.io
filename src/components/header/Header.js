@@ -3,7 +3,6 @@ import { Row, Col, Dropdown, Form, Button, Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from "../../store/userSlice";
-import { auth } from "../../firebase";
 import { selectUser } from "../../store/userSlice";
 import { FaBell, FaSearch, FaCogs, FaDoorClosed, FaBars } from "react-icons/fa";
 import Avatar from "../../data/undraw_profile.svg";
@@ -16,8 +15,7 @@ export default function Header() {
   const user = useSelector(selectUser);
 
   const handleLogout = () => {
-    auth.signOut()
-    .then(() => dispatch(logout()));
+    dispatch(logout());
   }
 
   const handeSearch = () => {
