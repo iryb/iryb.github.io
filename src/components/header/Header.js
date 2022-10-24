@@ -84,7 +84,7 @@ export default function Header() {
                 </Dropdown>
                 <Dropdown className="d-flex align-items-center">
                   <Dropdown.Toggle className={styles.userInfo}>
-                    <span className="small">{user.email}</span>
+                    <span className="small">{user.displayName}</span>
                     <img className="img-profile rounded-circle"
                         src={Avatar} />
                   </Dropdown.Toggle>

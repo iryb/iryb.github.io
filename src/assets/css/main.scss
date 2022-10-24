@@ -14,3 +14,7 @@ $theme-colors: (
     background-color: darken($primary, 10);
   }
 }
+
+html, body, #root {
+  height: 100%;
+}
