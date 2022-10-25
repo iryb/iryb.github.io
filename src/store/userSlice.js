@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { app, 
-  firestore 
+  // firestore 
 } from '../firebase';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore"; 
+// import { setDoc, doc } from "firebase/firestore"; 
 
 
 const initialState = {
@@ -31,12 +31,12 @@ const signup = createAsyncThunk(
   'users/signup',
   async ({ name, email, password }) => {
     const newUser = await createUserWithEmailAndPassword(auth, email, password)
-    .then(registeredUser => {
-      setDoc(doc(firestore, "users", registeredUser.user.uid), {
-        name : name,
-        email : registeredUser.user.email
-      })
-    })
+    // .then(registeredUser => {
+    //   setDoc(doc(firestore, "users", registeredUser.user.uid), {
+    //     name : name,
+    //     email : registeredUser.user.email
+    //   })
+    // })
     .catch(e => console.log(e));
 
     await updateProfile(auth.currentUser, {

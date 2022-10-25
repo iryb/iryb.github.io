@@ -5,7 +5,7 @@ import AuthProvider from "../../contexts/AuthContext"
 import TasksProvider from '../../contexts/TasksContext'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Dashboard from "../Dashboard"
-import ForgotPassword from "../ForgotPassword"
+import ForgotPassword from "@components/sign/ForgotPassword"
 import UpdateProfile from "../UpdateProfile"
 import PrivateRoute from "../PrivateRoute"
 import { onAuthStateChanged } from "firebase/auth";
