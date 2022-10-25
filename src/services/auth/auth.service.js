@@ -1,5 +1,8 @@
-import { app } from '../../firebase';
-import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { app, firestore } from '../../firebase';
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, updateProfile, EmailAuthProvider, reauthenticateWithCredential,
+  deleteUser } from "firebase/auth";
+import { setDoc, doc, deleteDoc } from "firebase/firestore"; 
 
 const auth = getAuth(app)
 
@@ -30,9 +33,44 @@ export const signUpByEmail = async ({ name, email, password }) => {
     throw new Error(e.message);
   });
 
+  await setDoc(doc(firestore, "users", auth.currentUser.uid), {
+    name : name,
+    role: "user",
+    email : email
+  })
+  .then(() => console.log('user set'))
+  .catch(e => {
+    throw new Error(e.message);
+  });
+
   return { 
     displayName: newUser.user.displayName,
     email: newUser.user.email,
     photoURL: newUser.user.photoURL
   };
 }
+
+export const deleteProfile = async ({ password }) => {
+  let email = auth.currentUser.email;
+  let credential = EmailAuthProvider.credential(email, password);
+  let uid = auth.currentUser.uid;
+  
+  await reauthenticateWithCredential(auth.currentUser, credential)
+  .catch(e => {
+    throw new Error(e.message);
+  });
+
+  await deleteDoc(doc(firestore, "users", uid))
+  .catch(e => {
+    throw new Error(e.message);
+  });
+
+  await deleteUser(auth.currentUser)
+  .catch(e => {
+    throw new Error(e.message);
+  });
+
+  // .then(()=> {
+  //   updateTasksAfterUserDelete(uid)
+  // })
+};
