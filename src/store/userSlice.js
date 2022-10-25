@@ -1,55 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { app, 
-  // firestore 
-} from '../firebase';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-// import { setDoc, doc } from "firebase/firestore"; 
+import { signInByEmail, signOut, signUpByEmail } from '@services/services';
 
 
 const initialState = {
   user: null,
 };
 
-const auth = getAuth(app);
-
 const login = createAsyncThunk(
   'users/login',
-  async ({ email, password }) => {
-    const { displayName, photoURL } = await signInWithEmailAndPassword(auth, email, password);
-    return { displayName, email, photoURL };
-  }
+  async ({ email, password }) => await signInByEmail({ email, password })
 );
 
 const logout = createAsyncThunk(
   'users/logout',
-  async () => {
-    await auth.signOut();
-  }
+  async () => await signOut()
 );
 
 const signup = createAsyncThunk(
   'users/signup',
-  async ({ name, email, password }) => {
-    const newUser = await createUserWithEmailAndPassword(auth, email, password)
-    // .then(registeredUser => {
-    //   setDoc(doc(firestore, "users", registeredUser.user.uid), {
-    //     name : name,
-    //     email : registeredUser.user.email
-    //   })
-    // })
-    .catch(e => console.log(e));
-
-    await updateProfile(auth.currentUser, {
-      displayName: name
-    })
-    .catch(e => console.log(e));
-
-    return { 
-      displayName: newUser.user.displayName,
-      email: newUser.user.email,
-      photoURL: newUser.user.photoURL
-    };
-  }
+  async ({ name, email, password }) => await signUpByEmail({ name, email, password })
 );
 
 export const userSlice = createSlice({
