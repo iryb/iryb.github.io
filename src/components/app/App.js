@@ -1,13 +1,14 @@
-import React, {useEffect} from "react"
+import React, {useEffect} from "react";
 import Signup from "@components/sign/Signup";
 import Login from "@components/sign/Login";
-import AuthProvider from "../../contexts/AuthContext"
-import TasksProvider from '../../contexts/TasksContext'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Dashboard from "../Dashboard"
-import ForgotPassword from "@components/sign/ForgotPassword"
-import UpdateProfile from "../profile/UpdateProfile"
-import PrivateRoute from "../PrivateRoute"
+import AuthProvider from "../../contexts/AuthContext";
+import TasksProvider from '../../contexts/TasksContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from "../Dashboard";
+import Project from "@components/project/Project";
+import ForgotPassword from "@components/sign/ForgotPassword";
+import UpdateProfile from "../profile/UpdateProfile";
+import PrivateRoute from "../PrivateRoute";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useDispatch } from 'react-redux';
@@ -38,6 +39,7 @@ function App() {
         <TasksProvider>
           <Routes>
             <Route exact path="/" element={<Dashboard/>} />
+            <Route exact path="/project" element={<Project />} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/login" element={<Login/>} />
             <Route path="/forgot-password" element={<ForgotPassword/>} />
