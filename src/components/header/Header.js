@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Row, Col, Dropdown, Form, Button, Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,8 +9,9 @@ import Avatar from "../../data/undraw_profile.svg";
 import styles from './styles.module.scss';
 import clsx from 'clsx';
 
-export default function Header() {
+export default function Header({ toggleMenu }) {
   // const [error, setError] = useState('')
+  const [menuOpened, setMenuOpened] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
@@ -22,16 +23,21 @@ export default function Header() {
 
   }
 
+  const handleToggleMenu = () => {
+    setMenuOpened(!menuOpened);
+    toggleMenu(menuOpened);
+  }
+
   return (
     <>
       <div className="mb-4 bg-white shadow">
         <Row className={styles.header}>
           {user &&
             <Row>
-              <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
+              <button className={clsx("btn btn-link d-md-none", styles.navbarToggler)} onClick={handleToggleMenu}>
                 <FaBars />
               </button>
-              <Col className="d-flex align-items-center">
+              <Col className={clsx("d-flex align-items-center", styles.searchCol)}>
                 <Form onSubmit={handeSearch}>
                   <Form.Group className={styles.searchBar}>
                     <Form.Control type="text" className="form-control bg-light border-0 small" placeholder="Search for..."
@@ -42,7 +48,7 @@ export default function Header() {
                   </Form.Group>
                 </Form>
               </Col>
-              <Col className="d-flex justify-content-end">
+              <Col className={clsx("d-flex justify-content-end", styles.userCol)}>
                 <Dropdown className={clsx(styles.notificationsDropdown, "d-flex align-items-center")}>
                   <Dropdown.Toggle className={styles.icon}>
                     <FaBell />
