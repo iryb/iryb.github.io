@@ -1,12 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaTachometerAlt, FaArchive } from "react-icons/fa";
+import { Link, NavLink } from 'react-router-dom';
+import { FaTachometerAlt, FaFolder } from "react-icons/fa";
 import clsx from 'clsx';
 import styles from './styles.module.scss';
 
-const Navbar = () => {
+const Navbar = ({ isOpened }) => {
   return (
-    <ul className={styles.navbar} id="accordionSidebar">
+    <ul className={clsx(styles.navbar, isOpened && styles.opened)}>
         <Link to="/" className={clsx(styles.sidebarBrand, "py-3 d-flex align-items-center justify-content-center")}>
           <div className="sidebar-brand-icon rotate-n-15">
             <i className="fas fa-laugh-wink"></i>
@@ -16,11 +16,11 @@ const Navbar = () => {
 
         <hr className={clsx(styles.sidebarDivider, "mb-0")} />
 
-        <li className="nav-item active">
-          <Link className={styles.navLink} to="/">
+        <li className="nav-item">
+          <NavLink className={styles.navLink} to="/">
             <FaTachometerAlt />
             <span>Dashboard</span>
-          </Link>
+          </NavLink>
         </li>
 
         <hr className={styles.sidebarDivider} />
@@ -30,32 +30,10 @@ const Navbar = () => {
         </div>
 
         <li className="nav-item">
-          <Link className={styles.navLink} to="/">
-            <span>Main project</span>
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <Link className={styles.navLink} to="/">
-            <span>Proj 2</span>
-          </Link>
-        </li>
-
-        <hr className={clsx(styles.sidebarDivider, "mb-0")} />
-
-        <li className="nav-item">
-            <a className={clsx(styles.navLink, styles.linkCollapsed, "nav-link collapsed")} href="#" data-toggle="collapse" data-target="#collapseTwo"
-                aria-expanded="true" aria-controls="collapseTwo">
-              <FaArchive />
-              <span>Archive</span>
-            </a>
-            <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-              <div className="bg-white py-2 collapse-inner rounded">
-                <h6 className="collapse-header">Custom Components:</h6>
-                <a className="collapse-item" href="buttons.html">Buttons</a>
-                <a className="collapse-item" href="cards.html">Cards</a>
-              </div>
-            </div>
+          <NavLink className={styles.navLink} to="/project">
+            <FaFolder />
+            <span>Awesome project</span>
+          </NavLink>
         </li>
     </ul>
   )

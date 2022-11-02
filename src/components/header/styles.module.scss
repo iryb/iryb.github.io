@@ -3,6 +3,7 @@
 .header {
   padding: 0.5rem 1rem;
   height: $header-height;
+  align-items: center;
 }
 
 .searchBar {
@@ -69,4 +70,13 @@ button.icon {
   hr {
     background-color: $gray;
   }
+  svg {
+    fill: $gray;
+    margin-right: 15px;
+  }
+}
+
+.navbarToggler {
+  height: 2.5rem;
+  width: 2.5rem;
 }
