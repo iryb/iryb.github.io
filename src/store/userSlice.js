@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { signInByEmail, signOut, signUpByEmail } from '@services/services';
+import { signInByEmail, signOut, signUpByEmail, updateUserProfile, getUserRole } from '@services/services';
 
 
 const initialState = {
@@ -21,6 +21,16 @@ const signup = createAsyncThunk(
   async ({ name, email, password }) => await signUpByEmail({ name, email, password })
 );
 
+const updateProfile = createAsyncThunk(
+  'users/updateProfile',
+  async (data) => await updateUserProfile(data)
+);
+
+const setUserRole = createAsyncThunk(
+  'users/setRole',
+  async () => await getUserRole()
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -38,8 +48,14 @@ export const userSlice = createSlice({
     }),
     builder.addCase(logout.fulfilled, state => {
       state.user = null;
+    }),
+    builder.addCase(updateProfile.fulfilled, (state, action) => {
+      state.user = action.payload;
+    }),
+    builder.addCase(setUserRole.fulfilled, (state, action) => {
+      state.user.role = action.payload;
     })
-  },
+  }
 });
 
 export const { setUser } = userSlice.actions;
@@ -48,4 +64,4 @@ export const selectUser = (state) => state.user;
 
 export default userSlice.reducer;
 
-export { login, logout, signup };
+export { login, logout, signup, updateProfile, setUserRole };

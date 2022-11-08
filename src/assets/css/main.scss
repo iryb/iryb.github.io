@@ -37,8 +37,12 @@ html, body, #root {
 
 .inputRound {
   border-radius: 10rem;
-  padding: 1.5rem 1rem;
-  height: calc(1.5em + 0.75rem + 2px);
+  height: 38px;
+}
+
+.selectRound {
+  border-radius: 10rem;
+  height: 38px;
 }
 
 .buttonsContainer {
@@ -58,4 +62,8 @@ html, body, #root {
   .active {
     opacity: 1;
   }
+}
+
+.alert-sucess {
+  background-color: #99e999;
 }

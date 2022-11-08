@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
-import { Row, Col, Dropdown, Form, Button, Badge } from 'react-bootstrap'
+import { Row, Col, Dropdown, Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from "../../store/userSlice";
 import { selectUser } from "../../store/userSlice";
-import { FaBell, FaSearch, FaCogs, FaDoorClosed, FaBars } from "react-icons/fa";
-import Avatar from "../../data/undraw_profile.svg";
+import { FaSearch, FaCogs, FaDoorClosed, FaBars } from "react-icons/fa";
 import styles from './styles.module.scss';
 import clsx from 'clsx';
 
@@ -49,6 +48,7 @@ export default function Header({ toggleMenu }) {
                 </Form>
               </Col>
               <Col className={clsx("d-flex justify-content-end", styles.userCol)}>
+                {/* TODO
                 <Dropdown className={clsx(styles.notificationsDropdown, "d-flex align-items-center")}>
                   <Dropdown.Toggle className={styles.icon}>
                     <FaBell />
@@ -87,12 +87,12 @@ export default function Header({ toggleMenu }) {
                       </a>
                       <a className="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                   </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown> */}
                 <Dropdown className="d-flex align-items-center">
                   <Dropdown.Toggle className={styles.userInfo}>
                     <span className="small">{user.displayName}</span>
                     <img className="img-profile rounded-circle"
-                        src={Avatar} />
+                        src={user.photoURL} />
                   </Dropdown.Toggle>
                   <Dropdown.Menu className={clsx(styles.userNav, "shadow")}>
                     <Dropdown.Item as={Link} to="/update-profile">

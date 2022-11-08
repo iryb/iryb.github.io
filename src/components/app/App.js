@@ -12,7 +12,7 @@ import PrivateRoute from "../PrivateRoute";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useDispatch } from 'react-redux';
-import { setUser } from "../../store/userSlice";
+import { setUser, setUserRole } from "../../store/userSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,6 +29,7 @@ function App() {
           displayName: user.displayName,
           photoURL: user.photoURL
         }));
+        dispatch(setUserRole());
       }
     })
   }, []);

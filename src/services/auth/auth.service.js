@@ -1,10 +1,9 @@
-import { app, firestore } from '../../firebase';
-import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, 
+import { auth, firestore } from '../../firebase';
+import { sendPasswordResetEmail, signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, updateProfile, EmailAuthProvider, reauthenticateWithCredential,
   deleteUser } from "firebase/auth";
 import { setDoc, doc, deleteDoc } from "firebase/firestore"; 
-
-const auth = getAuth(app)
+import { getUserRole } from "@services/profile/profile.service";
 
 export const resetPassword = async (email) => {
   return await sendPasswordResetEmail(auth, email)
@@ -14,8 +13,14 @@ export const resetPassword = async (email) => {
 }
 
 export const signInByEmail = async ({ email, password }) => {
-  const { displayName, photoURL } = await signInWithEmailAndPassword(auth, email, password);
-  return { displayName, email, photoURL };
+  const { user } = await signInWithEmailAndPassword(auth, email, password);
+  const role  = await getUserRole();
+  return { 
+    displayName: user.displayName, 
+    email, 
+    photoURL: user.photoURL, 
+    role 
+  };
 }
 
 export const signOut = async () => await auth.signOut();
