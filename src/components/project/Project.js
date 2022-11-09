@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-// import { useAuth } from '../contexts/AuthContext'
+import React, { useState, useEffect } from 'react'
 import { Row, Button } from 'react-bootstrap'
 import Column from '../Column'
-import TaskCard from '../TaskCard'
+import TaskCard from '@components/task-card/TaskCard';
 import { statuses } from '../../data/index'
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -10,22 +9,31 @@ import {useTasks} from '../../contexts/TasksContext'
 import AddTaskModal from '../AddTaskModal' 
 import Task from '../Task'
 import { AiOutlinePlusSquare } from "react-icons/ai"
-import { useSelector } from 'react-redux'
-import { selectUser } from '@store/userSlice'
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '@store/userSlice';
+import { setTasks, selectTasks } from '@store/tasksSlice';
 import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer'
 
 export default function Project() {
   // const { getUserNameById } = useAuth()
-  // const [user, setUser] = useState(currentUser)
-  const { tasks, getTasks, setStatus } = useTasks() 
-  const [currentTasks, setCurrentTasks] = useState(tasks)
-  // const [userAdmin, setUserAdmin] = useState(currentUserAdmin)
+  const { 
+    // tasks, 
+    setStatus } = useTasks() 
   // const [loading, setLoading] = useState(false)
+
+  const currentTasks = useSelector(selectTasks);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTasks());
+  }, []);
+
 
   const onDrop = (item, monitor, status) => {
     setStatus(item, status)
-    handleUpdateTasks()
+    // handleUpdateTasks()
   };
 
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
@@ -34,40 +42,20 @@ export default function Project() {
   // const [assignedUser, setAssignedUser] = useState();
   const [openedTaskStatus, setOpenedTaskStatus] = useState();
 
-  // useEffect(() => {
-  //   if(currentUser) {
-  //     setLoading(true)
-  //     getUserRole(currentUser.uid).then(role => {
-  //       if(role === null) {
-  //         setUser(false)
-  //       }
-  //       if(role === 'admin') {
-  //         setUserAdmin(true)
-  //       } else {
-  //         setUserAdmin(false)
-  //       }
-  //     }).then(()=> {
-  //       setLoading(false)
-  //     })
-  //   }
-  // }, [])
-
-  const user = useSelector(selectUser);
-
   const handleAddModalShow = () => {
     setShowAddTaskModal(!showAddTaskModal)
   }
 
-  const handleUpdateTasks = () => {
-    getTasks().then((items) => {
-      setCurrentTasks(items)
-    })
-  }
+  // const handleUpdateTasks = () => {
+  //   getTasks().then((items) => {
+  //     setCurrentTasks(items)
+  //   })
+  // }
 
   const handleOpenTask = (e) => {
     if(e) {
       let taskId = e.target.parentNode.getAttribute("data-id")
-      let task = tasks.find(item => item.id === taskId)
+      let task = currentTasks.find(item => item.id === taskId)
       if(task.assignedUserId) {
         // getUserNameById(task.assignedUserId).then((user) => {
         //   setAssignedUser(user)
@@ -91,13 +79,15 @@ export default function Project() {
     <InnerPageContainer>
       <h1 className="h3 mb-4">Awesome project</h1>
       {/* {!loading && <> */}
-        <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} updateTasks={handleUpdateTasks}/>
+        <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} 
+        // updateTasks={handleUpdateTasks}
+        />
         <Task show={showTaskDetails} 
           showTaskDetails={handleOpenTask} 
           closeTask={handleCloseTask}
           item={openedTask} 
           // assignedUser={assignedUser} 
-          handleUpdateTasks={handleUpdateTasks}
+          // handleUpdateTasks={handleUpdateTasks}
           color={openedTaskStatus}
           // admin={userAdmin}
         />
