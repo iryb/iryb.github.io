@@ -1,6 +1,6 @@
 import { auth, firestore, storage } from '../../firebase';
 import { updateProfile, updateEmail, updatePassword } from "firebase/auth";
-import { updateDoc, doc, getDoc } from "firebase/firestore"; 
+import { updateDoc, doc, getDoc, getDocs, collection } from "firebase/firestore"; 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export const updateUserName = (name) => {
@@ -122,4 +122,14 @@ export const updateUserProfile = data => {
   });
 
   return user;
+}
+
+export const getUsersList = async () => {
+  const querySnapshot  = await getDocs(collection(firestore, "users"));
+
+  const data = querySnapshot.docs.map( doc => {
+    return { id: doc.id, ...doc.data() }
+  });
+
+  return data;
 }

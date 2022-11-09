@@ -1,5 +1,5 @@
 import { firestore } from '../../firebase'
-import { doc, getDoc, getDocs, collection } from "firebase/firestore"; 
+import { doc, getDoc, getDocs, collection, addDoc } from "firebase/firestore"; 
 
 export const getUserNameById = async (id) => {
   const docRef = doc(firestore, "users", id)
@@ -41,6 +41,41 @@ export const getTasks = async () => {
 
     return task;
   }));
+
+  return data;
+}
+
+export const getTask = async (id) => {
+  const docRef = doc(firestore, "tasks", id);
+  const taskDoc = await getDoc(docRef);
+
+  if (taskDoc.exists()) {
+    const assigneeName = await getUserNameById(taskDoc.data().assignedUserId);
+    const photo = await getUserPhotoById(taskDoc.data().assignedUserId);
+
+    const task = {
+      id: taskDoc.id, 
+      assignedUser: assigneeName,
+      assigneePhotoURL: photo,
+      ...taskDoc.data()
+    };
+
+    return task;
+  } else {
+    return null;
+  }
+}
+
+export const addTask = async ({ content, title, user }) => {
+  const taskData = {
+    assignedUserId: user,
+    content : content,
+    title : title,
+    status : "to do"
+  };
+
+  const docRef = await addDoc(collection(firestore, "tasks"), taskData);
+  const data = await getTask(docRef.id);
 
   return data;
 }

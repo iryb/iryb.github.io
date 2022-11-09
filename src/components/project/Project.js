@@ -6,20 +6,17 @@ import { statuses } from '../../data/index'
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend"
 import {useTasks} from '../../contexts/TasksContext'
-import AddTaskModal from '../AddTaskModal' 
+import AddTaskModal from '../add-task/AddTaskModal' 
 import Task from '../Task'
 import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from '@store/userSlice';
+import { selectUser, setUsers } from '@store/userSlice';
 import { setTasks, selectTasks } from '@store/tasksSlice';
 import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer'
 
 export default function Project() {
-  // const { getUserNameById } = useAuth()
-  const { 
-    // tasks, 
-    setStatus } = useTasks() 
+  const { setStatus } = useTasks() 
   // const [loading, setLoading] = useState(false)
 
   const currentTasks = useSelector(selectTasks);
@@ -28,29 +25,22 @@ export default function Project() {
 
   useEffect(() => {
     dispatch(setTasks());
+    dispatch(setUsers());
   }, []);
 
 
   const onDrop = (item, monitor, status) => {
     setStatus(item, status)
-    // handleUpdateTasks()
   };
 
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [openedTask, setOpenedTask] = useState();
-  // const [assignedUser, setAssignedUser] = useState();
   const [openedTaskStatus, setOpenedTaskStatus] = useState();
 
   const handleAddModalShow = () => {
     setShowAddTaskModal(!showAddTaskModal)
   }
-
-  // const handleUpdateTasks = () => {
-  //   getTasks().then((items) => {
-  //     setCurrentTasks(items)
-  //   })
-  // }
 
   const handleOpenTask = (e) => {
     if(e) {
@@ -79,17 +69,12 @@ export default function Project() {
     <InnerPageContainer>
       <h1 className="h3 mb-4">Awesome project</h1>
       {/* {!loading && <> */}
-        <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} 
-        // updateTasks={handleUpdateTasks}
-        />
+        <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} />
         <Task show={showTaskDetails} 
           showTaskDetails={handleOpenTask} 
           closeTask={handleCloseTask}
           item={openedTask} 
-          // assignedUser={assignedUser} 
-          // handleUpdateTasks={handleUpdateTasks}
           color={openedTaskStatus}
-          // admin={userAdmin}
         />
         <Row className="mt-4">
           <DndProvider backend={HTML5Backend}>

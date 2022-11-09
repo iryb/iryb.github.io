@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getTasks, getUserNameById } from '@services/services';
+import { getTasks, getUserNameById, addTask } from '@services/services';
 
 const initialState = {
   tasksList: [],
@@ -15,6 +15,11 @@ const getAssigneeInfo = createAsyncThunk(
   async ({ id }) => await getUserNameById({ id })
 );
 
+const addNewTask = createAsyncThunk(
+  'tasks/addTask',
+  async ({ content, title, user }) => await addTask({ content, title, user })
+);
+
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
@@ -23,6 +28,9 @@ export const tasksSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(setTasks.fulfilled, (state, action) => {
       state.tasksList = action.payload;
+    }),
+    builder.addCase(addNewTask.fulfilled, (state, action) => {
+      state.tasksList.push(action.payload);
     })
   }
 });
@@ -31,4 +39,4 @@ export const selectTasks = (state) => state.tasks.tasksList;
 
 export default tasksSlice.reducer;
 
-export { setTasks, getAssigneeInfo };
+export { setTasks, getAssigneeInfo, addNewTask };
