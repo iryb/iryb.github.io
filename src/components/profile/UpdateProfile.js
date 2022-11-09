@@ -90,13 +90,13 @@ export default function UpdateProfile() {
               <Col sm={6}>
                 <Form.Group className="mb-3" id="password">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password" ref={passwordRef} placeholder="Leave blank to keep the same" className="inputRound" />
+                  <Form.Control type="password" ref={passwordRef} placeholder="Leave blank to keep the same" className="inputRound" />
                 </Form.Group>
               </Col>
               <Col sm={6}>
                 <Form.Group className="mb-3" id="password-confirm">
                   <Form.Label>Confirm your Password</Form.Label>
-                  <Form.Control type="password" placeholder="Confirm Password" ref={passwordConfirmRef} placeholder="Leave blank to keep the same" className="inputRound" />
+                  <Form.Control type="password" ref={passwordConfirmRef} placeholder="Leave blank to keep the same" className="inputRound" />
                 </Form.Group>
               </Col>
             </Row>
