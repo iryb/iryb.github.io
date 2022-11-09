@@ -43,7 +43,6 @@ export const getUserRole = async () => {
 
   if (userData.exists()) {
     let userRole = userData.data().role;
-    console.log('service', userRole);
     return userRole;
   } else {
     return null;
@@ -61,20 +60,26 @@ export const updateUserRole = (role) => {
 
 export const updateUserPhoto = (photo) => {
   const fileRef = ref(storage, `${auth.currentUser.uid}.jpg`);
+
   uploadBytes(
     fileRef, 
     photo,
     { contentType: 'image/jpeg' }
   ).then(() => {
-    getDownloadURL(fileRef).then((url) => {
+    getDownloadURL(fileRef)
+    .then((url) => {
       updateProfile(auth.currentUser, {
         photoURL: url
-      })
-      .catch(e => {
-        throw new Error(e.message);
       });
+      updateDoc(doc(firestore, "users", auth.currentUser.uid), {
+        photoURL : url
+      })
     });
   })
+  .catch(e => {
+    throw new Error(e.message);
+  });
+
 }
 
 export const updateUserProfile = data => {
