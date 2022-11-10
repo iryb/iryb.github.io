@@ -1,0 +1,61 @@
+@import "@assets/css/variables.scss";
+
+.taskInfo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 300px;
+  font-size: 0.85rem;
+  .title {
+    width: 50%;
+    color: $dark-gray;
+    font-weight: 700;
+  }
+  .info {
+    width: 50%;
+    padding-bottom: 5px;
+  }
+  .userInfo {
+    display: flex;
+    align-items: center;
+    &>span {
+      padding-left: 10px;
+    }
+  }
+  .avatar {
+    margin-bottom: 0;
+  }
+}
+
+.taskInner {
+  padding: 15px;
+}
+
+.taskControls {
+  justify-content: flex-end;
+  padding-bottom: 10px;
+  button {
+    padding: 0;
+  }
+}
+
+.taskDescription {
+  padding-bottom: 15px;
+  border-bottom: 1px solid $gray;
+  margin-bottom: 15px;
+}
+
+.cardBody {
+  padding: 0;
+}
+
+.commentsBlock {
+  background-color: $light-gray;
+  padding: 20px 15px;
+  border-top: 1px solid $gray;
+  .textareaExpandable {
+    height: 40px;
+    min-height: 40px;
+    transition: min-height 300ms;
+  }
+}

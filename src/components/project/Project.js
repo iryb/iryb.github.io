@@ -7,7 +7,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend"
 import {useTasks} from '../../contexts/TasksContext'
 import AddTaskModal from '../add-task/AddTaskModal' 
-import Task from '../Task'
+import Task from '@components/task/Task';
 import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, setUsers } from '@store/userSlice';
@@ -70,12 +70,12 @@ export default function Project() {
       <h1 className="h3 mb-4">Awesome project</h1>
       {/* {!loading && <> */}
         <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} />
-        <Task show={showTaskDetails} 
+        {openedTask && <Task show={showTaskDetails} 
           showTaskDetails={handleOpenTask} 
           closeTask={handleCloseTask}
           item={openedTask} 
           color={openedTaskStatus}
-        />
+        />}
         <Row className="mt-4">
           <DndProvider backend={HTML5Backend}>
             {statuses.map((s) => {
