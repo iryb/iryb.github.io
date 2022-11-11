@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button, Modal, Alert, Badge, Form } from 'react-bootstrap'
 import { useTasks } from '../../contexts/TasksContext'
 import { BsTrash, BsPencil } from "react-icons/bs"
@@ -6,23 +6,29 @@ import EditTaskModal from '@components/EditTaskModal'
 import UserAvatar from "@components/user-avatar/UserAvatar";
 import styles from './styles.module.scss';
 import clsx from "clsx";
-import { useDispatch } from 'react-redux';
-import { addComment } from '@store/tasksSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addComment, getComments } from '@store/tasksSlice';
 
 
 export default function Task({show, showTaskDetails, item, color, closeTask}) {
-  const { 
-    assignedUser, assigneePhotoURL, 
-    status, title, content } = item;
+  const { id, assignedUser, assigneePhotoURL, status, title, content } = item;
 
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [showEditTask, setShowEditTask] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false)
   const {deleteTask} = useTasks()
-  const [textareaFocused, setTextareaFocused] = useState(false);
   const commentRef = useRef();
   const dispatch = useDispatch();
+
+  const comments = useSelector(state => {
+    const taskIdx = state.tasks.tasksList.findIndex(t => t.id === id);
+    return state.tasks.tasksList[taskIdx].comments;
+  });
+
+  useEffect(() => {
+    dispatch(getComments({ taskId: id }));
+  }, []);
 
   function handleClose() {
     closeTask()
@@ -53,23 +59,14 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
     setDeleteModal(!deleteModal)
   }
 
-  const handleSubmitComment = () => {
+  const handleSubmitComment = (e) => {
+    e.preventDefault();
     if(commentRef.current.value) {
       dispatch(addComment({
+        taskId: id,
         text: commentRef.current.value
       }));
     }
-  }
-
-  const handleFocus = (e) => {
-    e.target.style.minHeight = "100px";
-    e.target.style.marginBottom = "15px";
-    setTextareaFocused(true);
-  }
-
-  const handleBlur = (e) => {
-    e.target.style.minHeight = "0";
-    setTextareaFocused(false);
   }
 
   return (
@@ -118,12 +115,22 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
                 <Form onSubmit={handleSubmitComment}>
                   <Form.Group>
                     <Form.Control as="textarea" placeholder="Ask a question or post an update..." 
-                    ref={commentRef} onFocus={handleFocus} onBlur={handleBlur} className={styles.textareaExpandable} />
+                    ref={commentRef} className={styles.textareaExpandable} />
                   </Form.Group>
-                  {textareaFocused && <Button variant="primary" type="submit">
+                  <Button variant="primary" type="submit">
                     Send
-                  </Button>}
+                  </Button>
                 </Form>
+                {comments && 
+                <div className={styles.comments}>
+                    {comments.map(comment => (
+                      <div key={comment.id}>
+                        <UserAvatar userName={comment.userName} photo={comment.userPhoto} />
+                        {comment.text}
+                        <p>{comment.datetime}</p>
+                      </div>
+                    ))}
+                </div>}
               </div>
           </div>
         </div>

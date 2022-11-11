@@ -1,5 +1,5 @@
-import { firestore } from '../../firebase'
-import { doc, getDoc, getDocs, collection, addDoc } from "firebase/firestore"; 
+import { firestore, auth } from '../../firebase'
+import { doc, getDoc, getDocs, collection, addDoc, query, where, Timestamp } from "firebase/firestore"; 
 
 export const getUserNameById = async (id) => {
   const docRef = doc(firestore, "users", id)
@@ -78,4 +78,69 @@ export const addTask = async ({ content, title, user }) => {
   const data = await getTask(docRef.id);
 
   return data;
+}
+
+export const getCommentById = async (id) => {
+  const docRef = doc(firestore, "comments", id);
+  const commentDoc = await getDoc(docRef);
+
+  if (commentDoc.exists()) {
+    const userName = await getUserNameById(commentDoc.data().userId);
+    const userPhoto = await getUserPhotoById(commentDoc.data().userId);
+    const date = commentDoc.data().datetime ? commentDoc.data().datetime.toDate().toLocaleString() : '';
+
+    const comment = {
+      id: commentDoc.id,
+      taskId: commentDoc.data().taskId,
+      userName: userName,
+      userPhoto: userPhoto,
+      text: commentDoc.data().text,
+      datetime: date
+    };
+
+    return comment;
+  } else {
+    return null;
+  }
+}
+
+export const addTaskComment = async ({ text, taskId }) => {
+
+  const commentData = {
+    datetime: Timestamp.now(),
+    taskId,
+    text,
+    userId: auth.currentUser.uid
+  };
+
+  const docRef = await addDoc(collection(firestore, "comments"), commentData);
+  const data = await getCommentById(docRef.id);
+
+  return data;
+}
+
+export const getTaskComments = async ({ taskId }) => {
+  const q = query(collection(firestore, "comments"), where("taskId", "==", taskId));
+  const querySnapshot = await getDocs(q);
+
+  const data = await Promise.all(
+    await querySnapshot.docs.map( async doc => {
+    const { text, datetime, userId } = doc.data();
+    const userName = await getUserNameById(userId);
+    const userPhoto = await getUserPhotoById(userId);
+
+    const date = datetime ? datetime.toDate().toLocaleString() : '';
+
+    const comment = {
+      id: doc.id,
+      text,
+      datetime: date,
+      userName,
+      userPhoto
+    };
+
+    return comment;
+  }));
+
+  return { id: taskId, comments: data };
 }
