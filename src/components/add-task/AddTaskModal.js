@@ -3,8 +3,7 @@ import { Button, Modal, Form, Alert} from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUsers } from '@store/userSlice';
 import { addNewTask } from '@store/tasksSlice';
-import styles from './styles.module.scss';
-import { v4 as uuidv4 } from 'uuid';
+import ImagesPreview from "@components/images-preview/ImagesPreview";
 
 export default function AddTaskModal({show, setShowModal}) {
   const titleRef = useRef();
@@ -12,7 +11,7 @@ export default function AddTaskModal({show, setShowModal}) {
   const userRef = useRef();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [filesPreview, setFilesPreview] = useState([]);
+  const [files, setFiles] = useState([]);
 
   const users = useSelector(selectUsers);
   const dispatch = useDispatch();
@@ -21,13 +20,8 @@ export default function AddTaskModal({show, setShowModal}) {
     setShowModal();
   }
 
-  const handleChangeFiles = (e) => {
-    if(e.target.files) {
-      setFilesPreview([]);
-      const files = Array.from(e.target.files);
-      console.log(files);
-      files.forEach(file => setFilesPreview([...filesPreview, URL.createObjectURL(file)]))
-    }
+  const handleFilesSet = (files) => {
+    setFiles(files);
   }
 
   const handleSave = (e) => {
@@ -46,7 +40,8 @@ export default function AddTaskModal({show, setShowModal}) {
       dispatch(addNewTask({
         content: desc,
         title,
-        user
+        user,
+        attachments: files
       }));
     }
   }
@@ -70,13 +65,7 @@ export default function AddTaskModal({show, setShowModal}) {
               <Form.Control as="textarea" placeholder="Enter description" ref={descRef} required />
             </Form.Group>
             <Form.Group className="mb-3" id="attachments">
-              <Form.Label>Attachments</Form.Label>
-              {filesPreview && filesPreview.map(file => {
-              return <div className={styles.previewWrapper} key={uuidv4()}>
-                <img src={file} alt="Preview" />
-              </div>})}
-              
-              <Form.Control type="file" accept="*" multiple="multiple" onChange={handleChangeFiles}/>
+              <ImagesPreview onFilesSet={handleFilesSet} />
             </Form.Group>
             <Form.Group className="mb-3" id="user">
               <Form.Label>Assign user</Form.Label>

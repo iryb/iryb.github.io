@@ -6,7 +6,7 @@ import { statuses } from '../../data/index'
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend"
 import {useTasks} from '../../contexts/TasksContext'
-import AddTaskModal from '../add-task/AddTaskModal' 
+import AddTaskModal from '@components/add-task/AddTaskModal' 
 import Task from '@components/task/Task';
 import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
@@ -46,12 +46,6 @@ export default function Project() {
     if(e) {
       let taskId = e.target.parentNode.getAttribute("data-id")
       let task = currentTasks.find(item => item.id === taskId)
-      if(task.assignedUserId) {
-        // getUserNameById(task.assignedUserId).then((user) => {
-        //   setAssignedUser(user)
-        // })
-      }
-
       let status = statuses.find(item => item.status === task.status)
       setOpenedTaskStatus(status.color)
       setOpenedTask(task)

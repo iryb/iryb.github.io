@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Button, Modal, Alert, Badge, Form } from 'react-bootstrap'
 import { useTasks } from '../../contexts/TasksContext'
 import { BsTrash, BsPencil } from "react-icons/bs"
-import EditTaskModal from '@components/EditTaskModal'
+import EditTaskModal from '@components/edit-task/EditTaskModal';
 import UserAvatar from "@components/user-avatar/UserAvatar";
 import styles from './styles.module.scss';
 import clsx from "clsx";
