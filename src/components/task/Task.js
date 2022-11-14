@@ -20,27 +20,27 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
   const [deleteModal, setDeleteModal] = useState(false);
   const dispatch = useDispatch();
 
-  function handleClose() {
+  const handleClose = () => {
     closeTask()
   }
 
-  function handleEditTask() {
+  const handleEditTask = () => {
     closeTask()
     setShowEditTask(!showEditTask)
   }
 
-  function handleOpenDelete() {
+  const handleOpenDelete = () => {
     showTaskDetails()
     setDeleteModal(!deleteModal)
   }
 
-  async function handleDeleteTask() {
+  const handleDeleteTask = () => {
     dispatch(removeTask({ taskId: id }))
     .then(() => handleCloseDelete())
     .catch((e) => setError(e));
   }
 
-  function handleCloseDelete() {
+  const handleCloseDelete = () => {
     setDeleteModal(!deleteModal)
   }
 
