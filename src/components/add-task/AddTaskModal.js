@@ -9,6 +9,7 @@ export default function AddTaskModal({show, setShowModal}) {
   const titleRef = useRef();
   const descRef = useRef();
   const userRef = useRef();
+  const dueDateRef = useRef();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [files, setFiles] = useState([]);
@@ -31,7 +32,7 @@ export default function AddTaskModal({show, setShowModal}) {
 
     let title = titleRef.current.value;
     let desc = descRef.current.value;
-    let user = 0;
+    let user = null;
 
     if(userRef.current.value) {
       user = userRef.current.value;
@@ -41,7 +42,8 @@ export default function AddTaskModal({show, setShowModal}) {
         content: desc,
         title,
         user,
-        attachments: files
+        attachments: files,
+        deadline: dueDateRef.current.value
       }));
     }
   }
@@ -68,14 +70,19 @@ export default function AddTaskModal({show, setShowModal}) {
               <ImagesPreview onFilesSet={handleFilesSet} />
             </Form.Group>
             <Form.Group className="mb-3" id="user">
-              <Form.Label>Assign user</Form.Label>
+              <Form.Label>Assigned user</Form.Label>
               <Form.Select ref={userRef}>
+                <option value="">No user selected</option>
                 {users.map( user => {
                   return <option key={user.id} value={user.id}>
                     {user.name}
                   </option>
                 })}
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" id="deadline">
+              <Form.Label>Due date:</Form.Label>
+              <Form.Control type="datetime-local" name="deadline" ref={dueDateRef} />
             </Form.Group>
             <Button variant="primary" type="submit">
               Add Task

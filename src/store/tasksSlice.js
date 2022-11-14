@@ -17,7 +17,7 @@ const getAssigneeInfo = createAsyncThunk(
 
 const addNewTask = createAsyncThunk(
   'tasks/addTask',
-  async ({ content, title, user }) => await addTask({ content, title, user })
+  async ({ content, title, user, attachments, deadline }) => await addTask({ content, title, user, attachments, deadline })
 );
 
 const addComment = createAsyncThunk(

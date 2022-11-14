@@ -7,6 +7,7 @@ module.exports = {
       '@assets': path.resolve(__dirname, './src/assets'),
       '@store': path.resolve(__dirname, './src/store'),
       '@services': path.resolve(__dirname, './src/services'),
+      '@helpers': path.resolve(__dirname, './src/helpers'),
     },
   },
 };

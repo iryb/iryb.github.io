@@ -1,5 +1,8 @@
-import { firestore, auth } from '../../firebase'
-import { doc, getDoc, getDocs, collection, addDoc, query, where, Timestamp } from "firebase/firestore"; 
+import { firestore, auth, storage } from '../../firebase'
+import { doc, getDoc, getDocs, collection, addDoc, query, 
+  where, Timestamp } from "firebase/firestore"; 
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { formatDate } from '@helpers/helpers';
 
 export const getUserNameById = async (id) => {
   const docRef = doc(firestore, "users", id)
@@ -29,17 +32,26 @@ export const getTasks = async () => {
 
   const data = await Promise.all(
     await querySnapshot.docs.map( async doc => {
-    const assigneeName = await getUserNameById(doc.data().assignedUserId);
-    const photo = await getUserPhotoById(doc.data().assignedUserId);
+      let assigneeName, photo;
+      if(doc.data().assignedUserId) {
+        assigneeName = await getUserNameById(doc.data().assignedUserId);
+        photo = await getUserPhotoById(doc.data().assignedUserId);
+      }
 
-    const task = {
-      id: doc.id, 
-      assignedUser: assigneeName,
-      assigneePhotoURL: photo,
-      ...doc.data()
-    };
+      const task = {
+        id: doc.id,
+        title: doc.data().title,
+        content: doc.data().content,
+        attachments: doc.data().attachments,
+        assignedUser: assigneeName,
+        assigneePhotoURL: photo,
+        dealdine: formatDate(doc.data().deadline),
+        createdAt: formatDate(doc.data().createdAt),
+        updatedAt: formatDate(doc.data().updatedAt),
+        status: doc.data().status
+      };
 
-    return task;
+      return task;
   }));
 
   return data;
@@ -50,14 +62,23 @@ export const getTask = async (id) => {
   const taskDoc = await getDoc(docRef);
 
   if (taskDoc.exists()) {
-    const assigneeName = await getUserNameById(taskDoc.data().assignedUserId);
-    const photo = await getUserPhotoById(taskDoc.data().assignedUserId);
+    let assigneeName, photo;
+    if (taskDoc.data().assignedUserId) {
+      assigneeName = await getUserNameById(taskDoc.data().assignedUserId);
+      photo = await getUserPhotoById(taskDoc.data().assignedUserId);
+    }
 
     const task = {
-      id: taskDoc.id, 
+      id: taskDoc.id,
+      title: taskDoc.data().title,
+      content: taskDoc.data().content,
+      attachments: taskDoc.data().attachments,
       assignedUser: assigneeName,
       assigneePhotoURL: photo,
-      ...taskDoc.data()
+      dealdine: formatDate(taskDoc.data().deadline),
+      createdAt: formatDate(taskDoc.data().createdAt),
+      updatedAt: formatDate(taskDoc.data().updatedAt),
+      status: taskDoc.data().status
     };
 
     return task;
@@ -66,12 +87,34 @@ export const getTask = async (id) => {
   }
 }
 
-export const addTask = async ({ content, title, user }) => {
+export const addTask = async (inputData) => {
+  const { content, title, user, attachments, deadline } = inputData;
+  let filesArr = [];
+
+  if (attachments) {
+    filesArr = await Promise.all(
+      attachments.map(async file => {
+        const fileRef = ref(storage, file.name);
+        await uploadBytes(
+          fileRef, 
+          file,
+          { contentType: 'image/jpeg' }
+        );
+
+        return await getDownloadURL(fileRef);
+      })
+    );
+  }
+
   const taskData = {
     assignedUserId: user,
     content : content,
     title : title,
-    status : "to do"
+    status : "to do",
+    attachments: filesArr,
+    deadline: deadline ? Timestamp.fromDate(new Date(deadline)) : null,
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now()
   };
 
   const docRef = await addDoc(collection(firestore, "tasks"), taskData);
