@@ -22,7 +22,7 @@ export default function ImagesPreview({ onFilesSet, attachments }) {
   return (
     <>
       <Form.Label>Attachments</Form.Label>
-      {filesPreview.length > 0 && <div className={styles.previewWrapper}>
+      {filesPreview && filesPreview.length > 0 && <div className={styles.previewWrapper}>
         {filesPreview.map(file => {
           return <div className={styles.previewFile} key={uuidv4()}>
             <img src={file} alt="File preview" />
