@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getTasks, getUserNameById, addTask, addTaskComment, getTaskComments } from '@services/services';
+import { getTasks, getUserNameById, addTask, addTaskComment, getTaskComments, deleteTask } from '@services/services';
 
 const initialState = {
   tasksList: [],
@@ -18,6 +18,11 @@ const getAssigneeInfo = createAsyncThunk(
 const addNewTask = createAsyncThunk(
   'tasks/addTask',
   async ({ content, title, user, attachments, deadline }) => await addTask({ content, title, user, attachments, deadline })
+);
+
+const removeTask = createAsyncThunk(
+  'tasks/deleteTask',
+  async ({ taskId }) => await deleteTask({ taskId })
 );
 
 const addComment = createAsyncThunk(
@@ -51,6 +56,11 @@ export const tasksSlice = createSlice({
       const { taskId } = action.payload;
       const taskIdx = state.tasksList.findIndex(t => t.id === taskId);
       state.tasksList[taskIdx].comments.push(action.payload);
+    }),
+    builder.addCase(removeTask.fulfilled, (state, action) => {
+      const { taskId } = action.payload;
+      const taskIdx = state.tasksList.findIndex(t => t.id === taskId);
+      state.tasksList.splice(taskIdx, 1);
     })
   }
 });
@@ -59,4 +69,4 @@ export const selectTasks = (state) => state.tasks.tasksList;
 
 export default tasksSlice.reducer;
 
-export { setTasks, getAssigneeInfo, addNewTask, addComment, getComments };
+export { setTasks, getAssigneeInfo, addNewTask, addComment, getComments, removeTask };

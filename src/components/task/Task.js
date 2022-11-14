@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Button, Modal, Alert, Badge } from 'react-bootstrap'
-import { useTasks } from '../../contexts/TasksContext'
 import { BsTrash, BsPencil } from "react-icons/bs"
 import EditTaskModal from '@components/edit-task/EditTaskModal';
 import UserAvatar from "@components/user-avatar/UserAvatar";
@@ -8,17 +7,18 @@ import Comments from "@components/comments/Comments";
 import styles from './styles.module.scss';
 import clsx from "clsx";
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { removeTask } from '@store/tasksSlice';
 
 
 export default function Task({show, showTaskDetails, item, color, closeTask}) {
   const { id, assignedUser, assigneePhotoURL, 
     status, title, content, deadline, attachments, createdAt, updatedAt } = item;
 
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
   const [showEditTask, setShowEditTask] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false)
-  const {deleteTask} = useTasks()
+  const [deleteModal, setDeleteModal] = useState(false);
+  const dispatch = useDispatch();
 
   function handleClose() {
     closeTask()
@@ -35,13 +35,9 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
   }
 
   async function handleDeleteTask() {
-    await deleteTask(item.id).then(() => {
-      handleCloseDelete()
-      // handleUpdateTasks()
-      setMessage(`Task ${item.title} was sucessfully deleted.`)
-    }).catch(()=> {
-      setError('Failed to delete the task.')
-    })
+    dispatch(removeTask({ taskId: id }))
+    .then(() => handleCloseDelete())
+    .catch((e) => setError(e));
   }
 
   function handleCloseDelete() {
@@ -51,7 +47,6 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
   return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-      {message && <Alert variant="success">{message}</Alert>}
       <EditTaskModal show={showEditTask} showEditTask={handleEditTask} item={item}/>
       <Modal show={deleteModal} onHide={handleCloseDelete}>
         <Modal.Body>

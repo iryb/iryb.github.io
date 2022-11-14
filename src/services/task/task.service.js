@@ -1,5 +1,5 @@
 import { firestore, auth, storage } from '../../firebase'
-import { doc, getDoc, getDocs, collection, addDoc, query, 
+import { doc, getDoc, getDocs, deleteDoc, collection, addDoc, query, 
   where, Timestamp } from "firebase/firestore"; 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { formatDate } from '@helpers/helpers';
@@ -186,4 +186,13 @@ export const getTaskComments = async ({ taskId }) => {
   }));
 
   return { id: taskId, comments: data };
+}
+
+export const deleteTask = async ({ taskId }) => {
+  await deleteDoc(doc(firestore, "tasks", taskId))
+  .catch(e => {
+    throw new Error(e.message);
+  });
+
+  return taskId;
 }
