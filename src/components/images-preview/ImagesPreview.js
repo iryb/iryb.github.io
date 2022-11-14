@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from 'react-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './styles.module.scss';
 
-export default function ImagesPreview({ onFilesSet }) {
+export default function ImagesPreview({ onFilesSet, attachments }) {
   const [filesPreview, setFilesPreview] = useState([]);
+
+  useEffect(() => {
+    setFilesPreview(attachments);
+  }, []);
 
   const handleChangeFiles = (e) => {
     if(e.target.files) {
-      setFilesPreview([]);
       const files = Array.from(e.target.files);
       const filesArr = files.map(file => URL.createObjectURL(file));
       setFilesPreview(filesArr);

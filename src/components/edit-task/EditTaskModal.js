@@ -1,57 +1,47 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useRef, useState} from 'react'
 import { Button, Modal, Form, Alert} from 'react-bootstrap'
-import { useAuth } from '../../contexts/AuthContext'
-import { useTasks } from '../../contexts/TasksContext'
 import ImagesPreview from "@components/images-preview/ImagesPreview";
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUsers } from '@store/userSlice';
+import { updateTask } from '@store/tasksSlice';
 
-export default function EditTaskModal({show, showEditTask, item}) {
+export default function EditTaskModal({ show, showEditTask, item }) {
+  const { id, title, content, assignedUserId, deadline, attachments } = item;
   const titleRef = useRef()
   const contentRef = useRef()
   const userRef = useRef()
-  const { getUsersList } = useAuth()
-  const [users, setUsers] = useState()
-  const [loading, setLoading] = useState(true)
-  const { updateTask } = useTasks()
+  const dueDateRef = useRef();
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [files, setFiles] = useState([]);
-
-  useEffect(() => {
-    getUsersList().then((data) => {
-      setUsers(data)
-      setLoading(false)
-    })
-  }, [])
-  
+  const users = useSelector(selectUsers);
+  const dispatch = useDispatch();
 
   function handleClose() {
     showEditTask()
   }
 
-  async function handleSave(e) {
+  const handleSave = (e) => {
     e.preventDefault()
     setError('')
     setMessage('')
 
-    let title = titleRef.current.value
-    let content = contentRef.current.value
-    let user = 0
-
-    if(userRef.current.value) {
-      user = userRef.current.value
-    }
-
-    if(content && title) {
-      await updateTask(item.id, content, title, user).then(() => {
-        setMessage(`Task ${item.title} was successfully updated.`)
-        showEditTask()
+    if(title) {
+      dispatch(updateTask({
+        id,
+        content: contentRef.current.value,
+        title: titleRef.current.value,
+        user: userRef.current.value? userRef.current.value : null,
+        attachments: files,
+        deadline: dueDateRef.current.value
+      }))
+      .then(() => {
+        setMessage(`Task ${title} was successfully updated.`)
       }).catch(()=> {
         setError('Failed to upade the task.')
-      })
+      });
     }
   }
-
-  console.log(files);
 
   const handleFilesSet = (files) => {
     setFiles(files);
@@ -59,26 +49,30 @@ export default function EditTaskModal({show, showEditTask, item}) {
 
   return (
     <>
-    {error && <Alert variant="danger">{error}</Alert>}
-    {message && <Alert variant="success">{message}</Alert>}
-    {item && !loading &&
+    {item &&
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Task: {item.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {message && <Alert variant="success">{message}</Alert>}
         <Form onSubmit={handleSave}>
             <Form.Group className="mb-3" id="title">
               <Form.Label>Title</Form.Label>
-              <Form.Control type="text" placeholder="Enter title" ref={titleRef} defaultValue={item.title} required />
+              <Form.Control type="text" placeholder="Enter title" ref={titleRef} defaultValue={title} required />
             </Form.Group>
             <Form.Group className="mb-3" id="content">
               <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" placeholder="Enter description" ref={contentRef} defaultValue={item.content} required />
+              <Form.Control as="textarea" placeholder="Enter description" ref={contentRef} defaultValue={content} required />
+            </Form.Group>
+            <Form.Group className="mb-3" id="attachments">
+              <ImagesPreview onFilesSet={handleFilesSet} attachments={attachments} />
             </Form.Group>
             <Form.Group className="mb-3" id="user">
               <Form.Label>Assigned user</Form.Label>
-              <Form.Select ref={userRef} defaultValue={item.assignedUserId}>
+              <Form.Select ref={userRef} defaultValue={assignedUserId}>
+                <option value="">No user selected</option>
                 {users.map( user => {
                   return <option key={user.id} value={user.id}>{user.name}</option>
                 })}
@@ -86,10 +80,7 @@ export default function EditTaskModal({show, showEditTask, item}) {
             </Form.Group>
             <Form.Group className="mb-3" id="deadline">
               <Form.Label>Due date:</Form.Label>
-              <Form.Control type="date" name="deadline" />
-            </Form.Group>
-            <Form.Group className="mb-3" id="attachments">
-              <ImagesPreview onFilesSet={handleFilesSet} />
+              <Form.Control type="date" name="deadline" defaultValue={deadline} ref={dueDateRef} />
             </Form.Group>
             <Button variant="primary" type="submit">
               Save

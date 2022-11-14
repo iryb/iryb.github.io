@@ -1,5 +1,5 @@
 import { firestore, auth, storage } from '../../firebase'
-import { doc, getDoc, getDocs, deleteDoc, collection, addDoc, query, 
+import { doc, getDoc, getDocs, deleteDoc, updateDoc, collection, addDoc, query, 
   where, Timestamp } from "firebase/firestore"; 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { formatDate } from '@helpers/helpers';
@@ -119,6 +119,39 @@ export const addTask = async (inputData) => {
 
   const docRef = await addDoc(collection(firestore, "tasks"), taskData);
   const data = await getTask(docRef.id);
+
+  return data;
+}
+
+export const updTask = async (inputData) => {
+  const { id, content, title, user, attachments, deadline } = inputData;
+  let filesArr = [];
+
+  if (attachments) {
+    filesArr = await Promise.all(
+      attachments.map(async file => {
+        const fileRef = ref(storage, file.name);
+        await uploadBytes(
+          fileRef, 
+          file,
+          { contentType: 'image/jpeg' }
+        );
+
+        return await getDownloadURL(fileRef);
+      })
+    );
+  }
+
+  await updateDoc(doc(firestore, "tasks", id), {
+    assignedUserId: user,
+    content : content,
+    title : title,
+    deadline: deadline ? Timestamp.fromDate(new Date(deadline)) : null,
+    attachments: filesArr,
+    updatedAt: Timestamp.now()
+  })
+
+  const data = await getTask(id);
 
   return data;
 }
