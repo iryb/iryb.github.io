@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { formatDateShort } from "@helpers/helpers";
 
 export default function TaskCard({ item, index, color, isDraggable }) {
-  const { id, assignedUser, assigneePhotoURL, status, title, deadline } = item;
+  const { id, assignedUser, assigneePhotoURL, status, title, deadline, attachments } = item;
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'TASKCARD',
@@ -23,6 +23,10 @@ export default function TaskCard({ item, index, color, isDraggable }) {
   return (
     <Card className={clsx(styles.taskCard, "task-card mb-2 position-relative")} ref={drag} data-id={id} bg="light" style={{ opacity: isDragging ? 0.5 : 1}}>
       <div className={styles.taskInner}>
+        {attachments && attachments.length > 0 && 
+          <div className={styles.imagePreview}>
+            <img src={attachments[0]} alt="attachment" />
+          </div>}
         {assignedUser && <div className={styles.assignee}>
           {assigneePhotoURL && 
             <img src={assigneePhotoURL} alt={assignedUser} title={assignedUser} />}
