@@ -54,8 +54,8 @@ export const tasksSlice = createSlice({
       state.tasksList.push(action.payload);
     }),
     builder.addCase(updateTask.fulfilled, (state, action) => {
-      const { taskId } = action.payload;
-      const taskIdx = state.tasksList.findIndex(t => t.id === taskId);
+      const { id } = action.payload;
+      const taskIdx = state.tasksList.findIndex(t => t.id === id);
       state.tasksList.splice(taskIdx, 1, action.payload);
     }),
     builder.addCase(getComments.fulfilled, (state, action) => {
