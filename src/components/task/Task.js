@@ -1,34 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Button, Modal, Alert, Badge, Form } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Button, Modal, Alert, Badge } from 'react-bootstrap'
 import { useTasks } from '../../contexts/TasksContext'
 import { BsTrash, BsPencil } from "react-icons/bs"
 import EditTaskModal from '@components/edit-task/EditTaskModal';
 import UserAvatar from "@components/user-avatar/UserAvatar";
+import Comments from "@components/comments/Comments";
 import styles from './styles.module.scss';
 import clsx from "clsx";
-import { useDispatch, useSelector } from 'react-redux';
-import { addComment, getComments } from '@store/tasksSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function Task({show, showTaskDetails, item, color, closeTask}) {
-  const { id, assignedUser, assigneePhotoURL, status, title, content } = item;
+  const { id, assignedUser, assigneePhotoURL, 
+    status, title, content, deadline, attachments, createdAt, updatedAt } = item;
 
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [showEditTask, setShowEditTask] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false)
   const {deleteTask} = useTasks()
-  const commentRef = useRef();
-  const dispatch = useDispatch();
-
-  const comments = useSelector(state => {
-    const taskIdx = state.tasks.tasksList.findIndex(t => t.id === id);
-    return state.tasks.tasksList[taskIdx].comments;
-  });
-
-  useEffect(() => {
-    dispatch(getComments({ taskId: id }));
-  }, []);
 
   function handleClose() {
     closeTask()
@@ -36,7 +26,6 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
 
   function handleEditTask() {
     closeTask()
-    // handleUpdateTasks()
     setShowEditTask(!showEditTask)
   }
 
@@ -57,16 +46,6 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
 
   function handleCloseDelete() {
     setDeleteModal(!deleteModal)
-  }
-
-  const handleSubmitComment = (e) => {
-    e.preventDefault();
-    if(commentRef.current.value) {
-      dispatch(addComment({
-        taskId: id,
-        text: commentRef.current.value
-      }));
-    }
   }
 
   return (
@@ -93,6 +72,11 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
                   <Button variant="link btn-icon" onClick={handleEditTask}><BsPencil /></Button>
                 </div>
                 <div className={styles.taskDescription}>{content}</div>
+                {attachments && <div className={styles.taskAttachments}>
+                  {attachments.map(file => <a key={uuidv4()} href={file} target="blank">
+                      <img src={file} alt="file" />
+                    </a>)}
+                </div>}
                 <div className={styles.taskInfo}>
                   <div className={styles.title}>Status:</div>
                   <div className={styles.info}>
@@ -108,29 +92,15 @@ export default function Task({show, showTaskDetails, item, color, closeTask}) {
                     : <span>No one is assigned</span>}
                   </div>
                   <div className={styles.title}>Due date:</div>
-                  <div className={styles.info}>No due date</div>
+                  <div className={styles.info}>{deadline ? deadline : "No due date"}</div>
+                  <div className={styles.title}>Created:</div>
+                  <div className={styles.info}>{createdAt}</div>
+                  <div className={styles.title}>Updated:</div>
+                  <div className={styles.info}>{updatedAt}</div>
                 </div>
               </div>
               <div className={styles.commentsBlock}>
-                <Form onSubmit={handleSubmitComment}>
-                  <Form.Group>
-                    <Form.Control as="textarea" placeholder="Ask a question or post an update..." 
-                    ref={commentRef} className={styles.textareaExpandable} />
-                  </Form.Group>
-                  <Button variant="primary" type="submit">
-                    Send
-                  </Button>
-                </Form>
-                {comments && 
-                <div className={styles.comments}>
-                    {comments.map(comment => (
-                      <div key={comment.id}>
-                        <UserAvatar userName={comment.userName} photo={comment.userPhoto} />
-                        {comment.text}
-                        <p>{comment.datetime}</p>
-                      </div>
-                    ))}
-                </div>}
+                <Comments taskId={id} />
               </div>
           </div>
         </div>

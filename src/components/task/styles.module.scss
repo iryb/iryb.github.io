@@ -27,6 +27,18 @@
   }
 }
 
+.taskAttachments {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  column-gap: 10px;
+  row-gap: 10px;
+  margin-bottom: 15px;
+  img {
+    max-width: 100px;
+    height: auto;
+  }
+}
+
 .taskInner {
   padding: 15px;
 }
@@ -41,7 +53,6 @@
 
 .taskDescription {
   padding-bottom: 15px;
-  border-bottom: 1px solid $gray;
   margin-bottom: 15px;
 }
 
