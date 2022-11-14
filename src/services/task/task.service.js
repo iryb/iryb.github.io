@@ -45,7 +45,7 @@ export const getTasks = async () => {
         attachments: doc.data().attachments,
         assignedUser: assigneeName,
         assigneePhotoURL: photo,
-        dealdine: formatDate(doc.data().deadline),
+        deadline: formatDate(doc.data().deadline),
         createdAt: formatDate(doc.data().createdAt),
         updatedAt: formatDate(doc.data().updatedAt),
         status: doc.data().status
@@ -75,7 +75,7 @@ export const getTask = async (id) => {
       attachments: taskDoc.data().attachments,
       assignedUser: assigneeName,
       assigneePhotoURL: photo,
-      dealdine: formatDate(taskDoc.data().deadline),
+      deadline: formatDate(taskDoc.data().deadline),
       createdAt: formatDate(taskDoc.data().createdAt),
       updatedAt: formatDate(taskDoc.data().updatedAt),
       status: taskDoc.data().status
