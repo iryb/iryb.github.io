@@ -11,7 +11,7 @@ import Task from '@components/task/Task';
 import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, setUsers } from '@store/userSlice';
-import { selectTasks } from '@store/tasksSlice';
+import { selectTasks, selectOpenedTask, setOpenedTask } from '@store/tasksSlice';
 import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer'
 
@@ -19,22 +19,28 @@ export default function Project() {
   const { setStatus } = useTasks() 
 
   const currentTasks = useSelector(selectTasks);
+  const openedTaskId = useSelector(selectOpenedTask);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+  const [showTaskDetails, setShowTaskDetails] = useState(false);
+  const [taskDetails, setTaskDetails] = useState();
+  const [openedTaskStatus, setOpenedTaskStatus] = useState();
 
   useEffect(() => {
     dispatch(setUsers());
   }, []);
 
+  useEffect(() => {
+    const task = currentTasks.find(t => t.id === openedTaskId);
+    console.log(task);
+    setTaskDetails(task);
+    setShowTaskDetails(true);
+  }, []);
 
   const onDrop = (item, monitor, status) => {
     setStatus(item, status)
   };
-
-  const [showAddTaskModal, setShowAddTaskModal] = useState(false);
-  const [showTaskDetails, setShowTaskDetails] = useState(false);
-  const [openedTask, setOpenedTask] = useState();
-  const [openedTaskStatus, setOpenedTaskStatus] = useState();
 
   const handleAddModalShow = () => {
     setShowAddTaskModal(!showAddTaskModal)
@@ -46,13 +52,14 @@ export default function Project() {
       let task = currentTasks.find(item => item.id === taskId)
       let status = statuses.find(item => item.status === task.status)
       setOpenedTaskStatus(status.color)
-      setOpenedTask(task)
+      setTaskDetails(task)
     }
     setShowTaskDetails(!showTaskDetails)
   }
 
   const handleCloseTask = () => {
-    setShowTaskDetails(false)
+    setShowTaskDetails(false);
+    dispatch(setOpenedTask(null));
   }
 
   if (!user) return <Login />;
@@ -61,10 +68,10 @@ export default function Project() {
     <InnerPageContainer>
       <h1 className="h3 mb-4">Awesome project</h1>
       <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} />
-      {openedTask && <Task show={showTaskDetails} 
+      {taskDetails && <Task show={showTaskDetails} 
         showTaskDetails={handleOpenTask} 
         closeTask={handleCloseTask}
-        item={openedTask} 
+        item={taskDetails} 
         color={openedTaskStatus}
       />}
       <Row className="mt-4">
