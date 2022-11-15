@@ -11,9 +11,11 @@ import Task from '@components/task/Task';
 import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, setUsers } from '@store/userSlice';
-import { selectTasks, selectOpenedTask, setOpenedTask } from '@store/tasksSlice';
+import { selectTasks, selectOpenedTask, setOpenedTask, selectFilterText, searchByText } from '@store/tasksSlice';
 import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer'
+import { FaTimes } from "react-icons/fa";
+import styles from './styles.module.scss';
 
 export default function Project() {
   const { setStatus } = useTasks() 
@@ -21,6 +23,7 @@ export default function Project() {
   const currentTasks = useSelector(selectTasks);
   const openedTaskId = useSelector(selectOpenedTask);
   const user = useSelector(selectUser);
+  const filterText = useSelector(selectFilterText);
   const dispatch = useDispatch();
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
@@ -33,7 +36,6 @@ export default function Project() {
 
   useEffect(() => {
     const task = currentTasks.find(t => t.id === openedTaskId);
-    console.log(task);
     setTaskDetails(task);
     setShowTaskDetails(true);
   }, []);
@@ -62,11 +64,24 @@ export default function Project() {
     dispatch(setOpenedTask(null));
   }
 
+  const handleSearchClear = () => {
+    dispatch(searchByText(null));
+  }
+
   if (!user) return <Login />;
 
   return (
     <InnerPageContainer>
       <h1 className="h3 mb-4">Awesome project</h1>
+      {filterText &&<div>
+        Search results: 
+        <div className={styles.searchTerm}>
+          {filterText}
+          <span className={styles.searchTermClose} onClick={handleSearchClear}>
+            <FaTimes />
+          </span>
+        </div>
+      </div>}
       <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} />
       {taskDetails && <Task show={showTaskDetails} 
         showTaskDetails={handleOpenTask} 
@@ -83,6 +98,7 @@ export default function Project() {
                 <h3 className="h5 col-header text-center pb-1">{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</h3>
                 {currentTasks
                   .filter(i => i.status === s.status)
+                  .filter(i => filterText? i.title.toLowerCase().includes(filterText.toLowerCase()) : i)
                   .map((i, idx) => {
                     return <div key={i.id} className="task-container" onClick={handleOpenTask}>
                       {user ? <TaskCard key={i.id} item={i} index={idx} 

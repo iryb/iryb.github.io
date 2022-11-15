@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState, useRef } from 'react'
 import { Row, Col, Dropdown, Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from "../../store/userSlice";
-import { selectUser } from "../../store/userSlice";
+import { logout, selectUser } from "@store/userSlice";
+import { searchByText } from "@store/tasksSlice";
 import { FaSearch, FaCogs, FaDoorClosed, FaBars } from "react-icons/fa";
 import styles from './styles.module.scss';
 import clsx from 'clsx';
@@ -11,6 +11,7 @@ import clsx from 'clsx';
 export default function Header({ toggleMenu }) {
   // const [error, setError] = useState('')
   const [menuOpened, setMenuOpened] = useState(false);
+  const searchRef = useRef();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
@@ -18,8 +19,9 @@ export default function Header({ toggleMenu }) {
     dispatch(logout());
   }
 
-  const handeSearch = () => {
-
+  const handeSearch = (e) => {
+    e.preventDefault();
+    dispatch(searchByText({ text: searchRef.current.value }))
   }
 
   const handleToggleMenu = () => {
@@ -40,8 +42,8 @@ export default function Header({ toggleMenu }) {
                 <Form onSubmit={handeSearch}>
                   <Form.Group className={styles.searchBar}>
                     <Form.Control type="text" className="form-control bg-light border-0 small" placeholder="Search for..."
-                        aria-label="Search" />
-                    <Button variant="primary">
+                        aria-label="Search" ref={searchRef} />
+                    <Button variant="primary" type="submit">
                       <FaSearch />
                     </Button>
                   </Form.Group>

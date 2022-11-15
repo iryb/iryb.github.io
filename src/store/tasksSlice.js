@@ -4,7 +4,8 @@ import { getTasks, getUserNameById, addTask, addTaskComment,
 
 const initialState = {
   tasksList: [],
-  openedTask: null
+  openedTask: null,
+  filter: null
 };
 
 const setTasks = createAsyncThunk(
@@ -49,6 +50,9 @@ export const tasksSlice = createSlice({
     setOpenedTask: (state, action) => {
       state.openedTask = action.payload;
     },
+    searchByText: (state, action) => {
+      state.filter = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(setTasks.fulfilled, (state, action) => {
@@ -84,7 +88,9 @@ export const selectTasks = (state) => state.tasks.tasksList;
 
 export const selectOpenedTask = (state) => state.tasks.openedTask?.id;
 
-export const { setOpenedTask } = tasksSlice.actions;
+export const selectFilterText = (state) => state.tasks.filter?.text;
+
+export const { setOpenedTask, searchByText } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
 
