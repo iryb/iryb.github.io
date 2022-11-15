@@ -12,7 +12,8 @@ import PrivateRoute from "../PrivateRoute";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useDispatch } from 'react-redux';
-import { setUser, setUserRole } from "../../store/userSlice";
+import { setUser, setUserRole } from "@store/userSlice";
+import { setTasks } from '@store/tasksSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -22,9 +23,14 @@ function App() {
   }, []);
 
   useEffect(() => {
+    dispatch(setTasks());
+  }, []);
+
+  useEffect(() => {
     onAuthStateChanged(auth, user => {
       if (user) {
         dispatch(setUser({
+          id: auth.currentUser.uid,
           email: user.email,
           displayName: user.displayName,
           photoURL: user.photoURL

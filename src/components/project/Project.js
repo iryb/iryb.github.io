@@ -11,20 +11,18 @@ import Task from '@components/task/Task';
 import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, setUsers } from '@store/userSlice';
-import { setTasks, selectTasks } from '@store/tasksSlice';
+import { selectTasks } from '@store/tasksSlice';
 import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer'
 
 export default function Project() {
   const { setStatus } = useTasks() 
-  // const [loading, setLoading] = useState(false)
 
   const currentTasks = useSelector(selectTasks);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setTasks());
     dispatch(setUsers());
   }, []);
 
@@ -62,39 +60,37 @@ export default function Project() {
   return (
     <InnerPageContainer>
       <h1 className="h3 mb-4">Awesome project</h1>
-      {/* {!loading && <> */}
-        <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} />
-        {openedTask && <Task show={showTaskDetails} 
-          showTaskDetails={handleOpenTask} 
-          closeTask={handleCloseTask}
-          item={openedTask} 
-          color={openedTaskStatus}
-        />}
-        <Row className="mt-4">
-          <DndProvider backend={HTML5Backend}>
-            {statuses.map((s) => {
-              return (
-                <Column onDrop={onDrop} status={s.status} key={s.id}>
-                  <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}><AiOutlinePlusSquare /></Button>
-                  <h3 className="h5 col-header text-center pb-1">{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</h3>
-                  {currentTasks
-                    .filter(i => i.status === s.status)
-                    .map((i, idx) => {
-                      return <div key={i.id} className="task-container" onClick={handleOpenTask}>
-                        {user ? <TaskCard key={i.id} item={i} index={idx} 
-                          color={s.color} isDraggable={true} /> : 
-                          <TaskCard key={i.id} item={i} index={idx} 
-                          color={s.color} isDraggable={false} />
-                        }
-                      </div>
-                    })
-                  }
-                </Column>
-                );
-            })}
-          </DndProvider>
-        </Row>
-      {/* </>} */}
+      <AddTaskModal show={showAddTaskModal} setShowModal={handleAddModalShow} />
+      {openedTask && <Task show={showTaskDetails} 
+        showTaskDetails={handleOpenTask} 
+        closeTask={handleCloseTask}
+        item={openedTask} 
+        color={openedTaskStatus}
+      />}
+      <Row className="mt-4">
+        <DndProvider backend={HTML5Backend}>
+          {statuses.map((s) => {
+            return (
+              <Column onDrop={onDrop} status={s.status} key={s.id}>
+                <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}><AiOutlinePlusSquare /></Button>
+                <h3 className="h5 col-header text-center pb-1">{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</h3>
+                {currentTasks
+                  .filter(i => i.status === s.status)
+                  .map((i, idx) => {
+                    return <div key={i.id} className="task-container" onClick={handleOpenTask}>
+                      {user ? <TaskCard key={i.id} item={i} index={idx} 
+                        color={s.color} isDraggable={true} /> : 
+                        <TaskCard key={i.id} item={i} index={idx} 
+                        color={s.color} isDraggable={false} />
+                      }
+                    </div>
+                  })
+                }
+              </Column>
+              );
+          })}
+        </DndProvider>
+      </Row>
     </InnerPageContainer>
   )
 }
