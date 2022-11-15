@@ -16,6 +16,7 @@ export const signInByEmail = async ({ email, password }) => {
   const { user } = await signInWithEmailAndPassword(auth, email, password);
   const role  = await getUserRole();
   return { 
+    id: auth.currentUser.uid,
     displayName: user.displayName, 
     email, 
     photoURL: user.photoURL, 
@@ -49,6 +50,7 @@ export const signUpByEmail = async ({ name, email, password }) => {
   });
 
   return { 
+    id: auth.currentUser.uid,
     displayName: newUser.user.displayName,
     email: newUser.user.email,
     photoURL: newUser.user.photoURL
