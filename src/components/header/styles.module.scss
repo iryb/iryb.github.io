@@ -1,7 +1,7 @@
 @import "@assets/css/variables.scss";
 
 .headerWrapper {
-  @media (max-width: 768px) {
+  @media (max-width: $mobile) {
     position: fixed;
     top: 0;
     left: 0;
@@ -17,7 +17,7 @@
   .navbarToggler {
     height: 2.5rem;
     width: 2.5rem;
-    @media (max-width: 768px) {
+    @media (max-width: $mobile) {
       padding: 0;
       width: 35px;
       margin-right: 15px;
@@ -28,12 +28,12 @@
     }
   }
   .searchCol {
-    @media (max-width: 768px) {
+    @media (max-width: $mobile) {
       width: 175px;
     }
   }
   .userCol {
-    @media (max-width: 768px) {
+    @media (max-width: $mobile) {
       width: 175px;
     }
     .userInfo {
@@ -46,7 +46,7 @@
       span {
         color: $text;
         margin-right: 0.5rem;
-        @media (max-width: 768px) {
+        @media (max-width: $mobile) {
           display: none;
         }
       }
@@ -63,7 +63,7 @@
 .searchBar {
   display: flex;
   width: 25rem;
-  @media (max-width: 768px) {
+  @media (max-width: $mobile) {
     width: 175px;
   }
   input {
