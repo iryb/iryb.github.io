@@ -37,7 +37,7 @@ export default function TaskCard({ item, index, color, isDraggable }) {
           Due: {formatDateShort(deadline)}
           </div>}
         <Badge bg={color} className="item-status position-absolute top-0 end-0">{status}</Badge>
-        <Card.Title className="item-title mb-0 h6 transition-300">{title}</Card.Title>
+        <Card.Title className={clsx(styles.cardTitle, "item-title mb-0 h6 transition-300")}>{title}</Card.Title>
       </div>
     </Card>
   )

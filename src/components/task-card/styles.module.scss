@@ -1,5 +1,15 @@
 @import "@assets/css/variables.scss";
 
+.taskCard {
+  cursor: pointer;
+  &:hover {
+    .cardTitle{
+      color: $primary;
+      pointer-events: none;
+    }
+  }
+}
+
 .deadline {
   position: absolute;
   top: 0;
