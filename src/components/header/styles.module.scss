@@ -1,0 +1,90 @@
+@import "@assets/css/variables.scss";
+
+.headerWrapper {
+  @media (max-width: $mobile) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+  }
+}
+
+.header {
+  padding: 0.5rem 1rem;
+  height: $header-height;
+  align-items: center;
+  .navbarToggler {
+    height: 2.5rem;
+    width: 2.5rem;
+    display: none;
+    @media (max-width: $mobile) {
+      display: block;
+      padding: 0;
+      width: 35px;
+      margin-right: 15px;
+      svg {
+        width: 22px;
+        height: auto;
+      }
+    }
+  }
+  .searchCol {
+    @media (max-width: $mobile) {
+      width: 175px;
+    }
+  }
+  .userCol {
+    @media (max-width: $mobile) {
+      width: 175px;
+    }
+    .userInfo {
+      background-color: transparent;
+      border: none;
+      padding-right: 0;
+      &:after {
+        display: none;
+      }
+      span {
+        color: $text;
+        margin-right: 0.5rem;
+        @media (max-width: $mobile) {
+          display: none;
+        }
+      }
+      img {
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+        border: 1px solid $gray;
+      }
+    }
+  }
+}
+
+.searchBar {
+  display: flex;
+  width: 25rem;
+  @media (max-width: $mobile) {
+    width: 175px;
+  }
+  input {
+    background-color: $light-gray;
+  }
+  button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.userNav {
+  margin-top: 15px;
+  border-color: $light-gray;
+  hr {
+    background-color: $gray;
+  }
+  svg {
+    fill: $gray;
+    margin-right: 15px;
+  }
+}

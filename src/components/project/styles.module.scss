@@ -1,0 +1,19 @@
+@import "@assets/css/variables.scss";
+
+.searchTerm {
+  position: relative;
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 0.25rem;
+  background-color: $primary;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.searchTermClose {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  cursor: pointer;
+}

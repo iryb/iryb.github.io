@@ -1,0 +1,11 @@
+@import "@assets/css/variables.scss";
+
+.contentWrapper {
+  background-color: #f8f9fc;
+  width: 100%;
+  overflow-x: hidden;
+  @media (max-width: $mobile) {
+    padding-top: 80px;
+    height: 100vh;
+  }
+}

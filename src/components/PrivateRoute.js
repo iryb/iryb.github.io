@@ -1,9 +1,10 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { selectUser } from "@store/userSlice";
+import { useSelector } from 'react-redux';
 
 export default function PrivateRoute({ children }) {
-  const { currentUser } = useAuth()
+  const user = useSelector(selectUser);
 
-  return currentUser ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/login" />;
 }

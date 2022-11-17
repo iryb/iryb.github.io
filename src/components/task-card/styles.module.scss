@@ -1,0 +1,56 @@
+@import "@assets/css/variables.scss";
+
+.taskCard {
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+  background-color: #fff;
+  cursor: pointer;
+  &:hover {
+    .cardTitle{
+      color: $primary;
+      pointer-events: none;
+    }
+  }
+}
+
+.deadline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ffd383;
+  font-size: 0.75rem;
+  padding: 2px 4px;
+  border-radius: 0.25rem;
+}
+
+.assignee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: #ddd;
+  border-radius: 50%;
+  border: 1px solid $gray;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  span {
+    font-size: 20px;
+    font-weight: 600;
+  }
+}
+
+.taskInner {
+  padding: 30px 16px 16px;
+}
+
+.imagePreview {
+  max-height: 100px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
