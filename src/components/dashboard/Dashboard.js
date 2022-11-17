@@ -36,11 +36,11 @@ export default function Dashboard() {
       {loading && <h4>Loading...</h4>}
       {!loading && <>
         <h4 className="mb-3">Upcoming tasks</h4>
-        {upcoming ? upcoming.map(t => <TaskListItem key={uuidv4()} task={t} />)
+        {upcoming?.length > 0 ? upcoming.map(t => <TaskListItem key={uuidv4()} task={t} />)
         : <p>No upcoming tasks</p>
         }
         <h4 className="mb-3">Completed tasks</h4>
-        {completed ? completed.map(t => <TaskListItem key={uuidv4()} task={t} />)
+        {completed?.length > 0 ? completed.map(t => <TaskListItem key={uuidv4()} task={t} />)
         : <p>No completed tasks</p>
         }
       </>}
