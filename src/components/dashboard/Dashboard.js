@@ -5,6 +5,7 @@ import { InnerPageContainer } from '@components/inner-page-container/InnerPageCo
 import { selectTasks } from '@store/tasksSlice';
 import { v4 as uuidv4 } from 'uuid';
 import TaskListItem from '@components/task-list-item/TaskListItem';
+import Login from "@components/sign/Login";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(false);
@@ -14,18 +15,24 @@ export default function Dashboard() {
   const currentTasks = useSelector(selectTasks);
 
   useEffect(() => {
-    setLoading(true);
-    const tasks = currentTasks.filter(t => (t.assignedUserId === user.id) && (t.status !== "done"));
-    setUpcoming(tasks);
-    setLoading(false);
+    if (user) {
+      setLoading(true);
+      const tasks = currentTasks.filter(t => (t.assignedUserId === user.id) && (t.status !== "done"));
+      setUpcoming(tasks);
+      setLoading(false);
+    }
   }, [currentTasks]);
 
   useEffect(() => {
-    setLoading(true);
-    const tasks = currentTasks.filter(t => (t.assignedUserId === user.id) && (t.status === "done"));
-    setCompleted(tasks);
-    setLoading(false);
+    if (user) {
+      setLoading(true);
+      const tasks = currentTasks.filter(t => (t.assignedUserId === user.id) && (t.status === "done"));
+      setCompleted(tasks);
+      setLoading(false);
+    }
   }, [currentTasks]);
+
+  if (user === null) return <Login />;
 
   return (
     <InnerPageContainer>
