@@ -34,7 +34,7 @@ export default function Header({ toggleMenu }) {
         <div className={clsx(styles.header, "m-0")}>
           {user &&
             <Row>
-              <button className={clsx("btn btn-link d-md-none", styles.navbarToggler)} onClick={handleToggleMenu}>
+              <button className={clsx("btn btn-link", styles.navbarToggler)} onClick={handleToggleMenu}>
                 <FaBars />
               </button>
               <Col className={clsx("d-flex align-items-center", styles.searchCol)}>
