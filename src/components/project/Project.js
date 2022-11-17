@@ -25,7 +25,6 @@ export default function Project() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [taskDetails, setTaskDetails] = useState();
-  const [openedTaskStatus, setOpenedTaskStatus] = useState();
 
   useEffect(() => {
     dispatch(setUsers());
@@ -50,8 +49,6 @@ export default function Project() {
     if(e) {
       let taskId = e.target.parentNode.getAttribute("data-id")
       let task = currentTasks.find(item => item.id === taskId)
-      let status = statuses.find(item => item.status === task.status)
-      setOpenedTaskStatus(status.color)
       setTaskDetails(task)
     }
     setShowTaskDetails(!showTaskDetails)
@@ -83,7 +80,6 @@ export default function Project() {
         showTaskDetails={handleOpenTask} 
         closeTask={handleCloseTask}
         item={taskDetails} 
-        color={openedTaskStatus}
       />}
       <Row className="mt-4">
         <DndProvider backend={HTML5Backend}>
