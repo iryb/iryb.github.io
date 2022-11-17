@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import styles from './styles.module.scss';
 import loginImage from '@assets/images/login.jpg';
-import { FaGoogle, FaFacebookF } from "react-icons/fa";
+// import { FaGoogle, FaFacebookF } from "react-icons/fa";
 
 export default function Login() {
   const emailRef = useRef()
@@ -54,7 +54,8 @@ export default function Login() {
                   </Button>
                 </Form>
                 <hr />
-                  <Button disabled={loading} variant="primary" type="button" className={clsx("mb-3", styles.button, styles.buttonGoogle)}>
+                  {/* TODO: Login with social media account
+                   <Button disabled={loading} variant="primary" type="button" className={clsx("mb-3", styles.button, styles.buttonGoogle)}>
                     <FaGoogle />
                     <span>Login with Google</span>
                   </Button>
@@ -62,7 +63,7 @@ export default function Login() {
                     <FaFacebookF />
                     <span>Login with Facebook</span>
                   </Button>
-                <hr />
+                <hr /> */}
                 <div className="w-100 text-center">
                   <Link to="/forgot-password">Forgot password?</Link>
                 </div>

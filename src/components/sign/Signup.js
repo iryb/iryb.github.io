@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 import signupImage from '@assets/images/signup.jpg';
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
-import { FaGoogle, FaFacebookF } from "react-icons/fa";
+// import { FaGoogle, FaFacebookF } from "react-icons/fa";
 import { signup } from '@store/userSlice';
 
 export default function Signup() {
@@ -13,7 +13,6 @@ export default function Signup() {
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
-  // const roleRef = useRef()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
@@ -68,17 +67,11 @@ export default function Signup() {
                     <Form.Group className={clsx(styles.formRow, "mb-3")} id="password-confirm">
                       <Form.Control type="password" placeholder="Repeat Password" ref={passwordConfirmRef} required />
                     </Form.Group>
-                    {/* <Form.Group className="mb-3" id="role">
-                      <Form.Label>Role</Form.Label>
-                      <Form.Select ref={roleRef}>
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
-                      </Form.Select>
-                    </Form.Group> */}
                     <Button disabled={loading} variant="primary" type="submit" className={styles.button}>
                       Create account
                     </Button>
                   </Form>
+                  {/* TODO: Signup with social media account 
                   <hr />
                   <Button disabled={loading} variant="primary" type="button" className={clsx("mb-3", styles.button, styles.buttonGoogle)}>
                     <FaGoogle />
@@ -87,7 +80,7 @@ export default function Signup() {
                   <Button disabled={loading} variant="primary" type="button" className={clsx(styles.button, styles.buttonFacebook)}>
                     <FaFacebookF />
                     <span>Register with Facebook</span>
-                  </Button>
+                  </Button> */}
                 </Col>
             </Row>
           </Card.Body>
