@@ -18,6 +18,11 @@
   @media (min-width: 768px) {
     width: 14rem;
   }
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 70px;
+    z-index: 10;
+  }
 }
 
 .navLink {

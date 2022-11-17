@@ -2,4 +2,7 @@
   background-color: #f8f9fc;
   width: 100%;
   overflow-x: hidden;
+  @media (max-width: 768px) {
+    padding-top: 80px;
+  }
 }

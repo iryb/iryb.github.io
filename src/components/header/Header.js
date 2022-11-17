@@ -31,10 +31,10 @@ export default function Header({ toggleMenu }) {
 
   return (
     <>
-      <div className="mb-4 bg-white shadow">
-        <Row className={styles.header}>
+      <div className={clsx(styles.headerWrapper, "mb-4 bg-white shadow")}>
+        <Row className={clsx(styles.header, "m-0")}>
           {user &&
-            <Row>
+            <Row className="m-0">
               <button className={clsx("btn btn-link d-md-none", styles.navbarToggler)} onClick={handleToggleMenu}>
                 <FaBars />
               </button>
