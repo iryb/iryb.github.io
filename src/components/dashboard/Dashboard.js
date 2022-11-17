@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@store/userSlice'
-import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer';
 import { selectTasks } from '@store/tasksSlice';
 import { v4 as uuidv4 } from 'uuid';
@@ -27,8 +26,6 @@ export default function Dashboard() {
     setCompleted(tasks);
     setLoading(false);
   }, [currentTasks]);
-
-  if (!user) return <Login />;
 
   return (
     <InnerPageContainer>

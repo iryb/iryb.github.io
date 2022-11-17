@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Row, Button } from 'react-bootstrap'
-import Column from '../Column'
+import Column from '@components/column/Column';
 import TaskCard from '@components/task-card/TaskCard';
 import { statuses } from '../../data/index'
 import { DndProvider } from "react-dnd";
@@ -12,7 +12,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, setUsers } from '@store/userSlice';
 import { selectTasks, selectOpenedTask, setOpenedTask, 
   selectFilterText, searchByText, updateTaskStatus } from '@store/tasksSlice';
-import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer'
 import { FaTimes } from "react-icons/fa";
 import styles from './styles.module.scss';
@@ -66,8 +65,6 @@ export default function Project() {
   const handleSearchClear = () => {
     dispatch(searchByText(null));
   }
-
-  if (!user) return <Login />;
 
   return (
     <InnerPageContainer>
