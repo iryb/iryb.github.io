@@ -36,6 +36,27 @@
     @media (max-width: 768px) {
       width: 175px;
     }
+    .userInfo {
+      background-color: transparent;
+      border: none;
+      padding-right: 0;
+      &:after {
+        display: none;
+      }
+      span {
+        color: $text;
+        margin-right: 0.5rem;
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
+      img {
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+        border: 1px solid $gray;
+      }
+    }
   }
 }
 
@@ -51,53 +72,6 @@
   button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-  }
-}
-
-button.icon {
-  position: relative;
-  background-color: transparent !important;
-  border: none;
-  margin: 0 0.75rem;
-  padding: 0;
-  width: 2.25em;
-  &:hover {
-    border: none;
-  }
-  &:after {
-    display: none;
-  }
-  svg {
-    fill: $gray;
-  }
-  .counter {
-    position: absolute;
-    transform: scale(.7);
-    transform-origin: top right;
-    right: -3px;
-    margin-top: -0.25rem;
-  }
-}
-
-.userInfo {
-  background-color: transparent !important;
-  border: none !important;
-  padding-right: 0;
-  &:after {
-    display: none !important;
-  }
-  span {
-    color: $text;
-    margin-right: 0.5rem;
-    @media (max-width: 768px) {
-      display: none;
-    }
-  }
-  img {
-    height: 2rem;
-    width: 2rem;
-    border-radius: 50%;
-    border: 1px solid $gray;
   }
 }
 
