@@ -5,21 +5,19 @@ import TaskCard from '@components/task-card/TaskCard';
 import { statuses } from '../../data/index'
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend"
-import {useTasks} from '../../contexts/TasksContext'
 import AddTaskModal from '@components/add-task/AddTaskModal' 
 import Task from '@components/task/Task';
 import { AiOutlinePlusSquare } from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, setUsers } from '@store/userSlice';
-import { selectTasks, selectOpenedTask, setOpenedTask, selectFilterText, searchByText } from '@store/tasksSlice';
+import { selectTasks, selectOpenedTask, setOpenedTask, 
+  selectFilterText, searchByText, updateTaskStatus } from '@store/tasksSlice';
 import Login from '@components/sign/Login'
 import { InnerPageContainer } from '@components/inner-page-container/InnerPageContainer'
 import { FaTimes } from "react-icons/fa";
 import styles from './styles.module.scss';
 
 export default function Project() {
-  const { setStatus } = useTasks() 
-
   const currentTasks = useSelector(selectTasks);
   const openedTaskId = useSelector(selectOpenedTask);
   const user = useSelector(selectUser);
@@ -41,7 +39,8 @@ export default function Project() {
   }, []);
 
   const onDrop = (item, monitor, status) => {
-    setStatus(item, status)
+    console.log(item);
+    dispatch(updateTaskStatus({ taskId: item, status }));
   };
 
   const handleAddModalShow = () => {

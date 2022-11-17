@@ -231,3 +231,15 @@ export const deleteTask = async ({ taskId }) => {
 
   return taskId;
 }
+
+export const setStatus = async ({ taskId, status }) => {
+  const tasksDoc = doc(firestore, "tasks", taskId);
+
+  await updateDoc(tasksDoc, {
+    status: status
+  }).catch(e => {
+    throw new Error(e.message);
+  });
+
+  return { taskId, status };
+}
