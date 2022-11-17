@@ -32,9 +32,9 @@ export default function Header({ toggleMenu }) {
   return (
     <>
       <div className={clsx(styles.headerWrapper, "mb-4 bg-white shadow")}>
-        <Row className={clsx(styles.header, "m-0")}>
+        <div className={clsx(styles.header, "m-0")}>
           {user &&
-            <Row className="m-0">
+            <Row>
               <button className={clsx("btn btn-link d-md-none", styles.navbarToggler)} onClick={handleToggleMenu}>
                 <FaBars />
               </button>
@@ -112,7 +112,7 @@ export default function Header({ toggleMenu }) {
             </Row>
           }
           {!user && <p className="mb-0"><Link className="transition-300" to="/login">Log in</Link> or <Link className="transition-300" to="/signup">Sign up</Link></p>}
-        </Row>
+        </div>
       </div>
     </>
   )
