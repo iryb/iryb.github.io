@@ -90,7 +90,9 @@ export default function Project() {
           {statuses.map((s) => {
             return (
               <Column onDrop={onDrop} status={s.status} key={s.id}>
-                <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}><AiOutlinePlusSquare /></Button>
+                {s.status === "to do" && <Button variant="link" className="btn-icon btn-add" onClick={handleAddModalShow}>
+                  <AiOutlinePlusSquare />
+                </Button>}
                 <h3 className="h5 col-header text-center pb-1">{s.status.charAt(0).toUpperCase() + s.status.slice(1)}</h3>
                 {currentTasks
                   .filter(i => i.status === s.status)
