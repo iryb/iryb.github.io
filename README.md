@@ -1,6 +1,6 @@
 # Tasks dashboard
 This is simple React app for task management.
-Link: https://tasks-dashboard-49705.firebaseapp.com/project
+Link: https://tasks-dashboard-49705--pr1-change-ui-crwgae8e.web.app/project
 
 ## Tech stack
 - React
