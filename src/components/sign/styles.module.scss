@@ -2,10 +2,16 @@
 
 .sign {
   &.cardContainer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
     max-width: 900px;
   }
   .card {
     overflow: hidden;
+    width: 100%;
   }
 }
 
@@ -39,7 +45,7 @@
       vertical-align: middle;
     }
   }
-  
+
   .buttonGoogle {
     background-color: #ea4335;
     border-color: #fff;
@@ -48,7 +54,7 @@
       border-color: #e6e6e6;
     }
   }
-  
+
   .buttonFacebook {
     background-color: #3b5998;
     border-color: #fff;

@@ -38,7 +38,7 @@ export default function Login() {
       <Col md={9} className={clsx(styles.cardContainer, styles.sign)}>
         <Card className={clsx(styles.card, "border-0 shadow-lg my-5")}>
           <Card.Body className="p-0">
-            <Row>
+            <Row className="m-0">
               <Col
                 lg={6}
                 className={clsx(styles.loginImage, "d-none d-lg-block")}
