@@ -3,10 +3,10 @@ import { Form, Button, Card, Alert, Row, Col } from "react-bootstrap";
 import clsx from "clsx";
 import styles from "./styles.module.scss";
 import signupImage from "@assets/images/signup.svg";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 // import { FaGoogle, FaFacebookF } from "react-icons/fa";
-import { signup } from "@store/userSlice";
+import { signup, selectUser } from "@store/userSlice";
 
 export default function Signup() {
   const nameRef = useRef();
@@ -17,6 +17,11 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loggedIn = useSelector(selectUser);
+
+  if (loggedIn) {
+    return <Navigate to="/" />;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();

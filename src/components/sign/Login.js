@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert, Row, Col } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../store/userSlice";
-import { useDispatch } from "react-redux";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { login, selectUser } from "../../store/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 import styles from "./styles.module.scss";
 import loginImage from "@assets/images/login.svg";
@@ -15,6 +15,11 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loggedIn = useSelector(selectUser);
+
+  if (loggedIn) {
+    return <Navigate to="/" />;
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -48,7 +53,10 @@ export default function Login() {
       })
     )
       .unwrap()
-      .then(() => navigate("/"))
+      .then(() => {
+        localStorage.setItem("isLoggedIn", true);
+        navigate("/");
+      })
       .catch(() => setError("Failed to log in"));
   };
 
