@@ -33,8 +33,27 @@ export default function Login() {
       .catch(() => setError("Failed to log in"));
   };
 
+  const handleDemoLogin = (e) => {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    console.log(process.env.REACT_APP_DEMO_LOGIN_EMAIL);
+
+    dispatch(
+      login({
+        email: process.env.REACT_APP_DEMO_LOGIN_EMAIL,
+        password: process.env.REACT_APP_DEMO_LOGIN_PASSWORD,
+      })
+    )
+      .unwrap()
+      .then(() => navigate("/"))
+      .catch(() => setError("Failed to log in"));
+  };
+
   return (
-    <Row className={clsx(styles.signBg, "justify-content-center")}>
+    <div className={clsx(styles.signBg, "d-flex justify-content-center")}>
       <Col md={9} className={clsx(styles.cardContainer, styles.sign)}>
         <Card className={clsx(styles.card, "border-0 shadow-lg my-5")}>
           <Card.Body className="p-0">
@@ -79,6 +98,15 @@ export default function Login() {
                     Login
                   </Button>
                 </Form>
+                <Button
+                  disabled={loading}
+                  variant="primary"
+                  type="submit"
+                  className={clsx(styles.button, "mt-3")}
+                  onClick={handleDemoLogin}
+                >
+                  Demo Login
+                </Button>
                 <hr />
                 {/* TODO: Login with social media account
                    <Button disabled={loading} variant="primary" type="button" className={clsx("mb-3", styles.button, styles.buttonGoogle)}>
@@ -101,6 +129,6 @@ export default function Login() {
           Don&apos;t have an account? <Link to="/signup">Sign up</Link>
         </div>
       </Col>
-    </Row>
+    </div>
   );
 }
