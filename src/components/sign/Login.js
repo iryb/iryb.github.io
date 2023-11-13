@@ -47,8 +47,6 @@ export default function Login() {
     setError("");
     setLoading(true);
 
-    console.log(process.env.REACT_APP_DEMO_LOGIN_EMAIL);
-
     dispatch(
       login({
         email: process.env.REACT_APP_DEMO_LOGIN_EMAIL,

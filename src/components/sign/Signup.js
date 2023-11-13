@@ -42,8 +42,7 @@ export default function Signup() {
     )
       .unwrap()
       .then(() => navigate("/"))
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         setError("Failed to create an account");
         setLoading(false);
       });
