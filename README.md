@@ -2,6 +2,19 @@
 
 This is simple React app for task management.
 
+## Demo
+
+[View demo](https://tasks-dashboard-49705.firebaseapp.com/)
+
+## Features
+
+- Authentication
+- Task creation and editing
+- Search
+- Task assignments
+- Comments
+- Personal dashboard
+
 ## Tech stack
 
 - React
@@ -15,16 +28,25 @@ This is simple React app for task management.
 
 ### Project
 
-![image](https://user-images.githubusercontent.com/44324806/202514657-a7a5b3b9-63a7-4370-8988-ffcccf93303e.png)
+![1](https://github.com/iryb/tasks-dashboard/assets/44324806/b2523caf-ca47-48ce-925d-9d0938f0d615)
 
 ### Task details
 
-![image](https://user-images.githubusercontent.com/44324806/202515055-428a10b3-ad5a-44c5-919e-989b8dee5748.png)
+![2](https://github.com/iryb/tasks-dashboard/assets/44324806/c96a70ef-9f93-44ed-b33b-d9453f985a73)
+
+### Search
+
+![3](https://github.com/iryb/tasks-dashboard/assets/44324806/fa404b00-6802-4ea4-8d04-d1bfe44126fd)
+
+### Dashboard
+
+![5](https://github.com/iryb/tasks-dashboard/assets/44324806/39b50565-c256-4639-808c-a94a75002d41)
 
 ### Profile settings
 
-![image](https://user-images.githubusercontent.com/44324806/202515257-d7d664e0-d321-4ea2-81e7-26c331c1040d.png)
+![4](https://github.com/iryb/tasks-dashboard/assets/44324806/e0634e51-db2b-4954-a933-6349bbdc8e77)
 
 ### Login / Sign up
 
-![image](https://user-images.githubusercontent.com/44324806/202515471-157c8317-18aa-468c-ae0a-a25813324ac2.png)
+![6](https://github.com/iryb/tasks-dashboard/assets/44324806/07a0b9c9-eff0-4e3b-8908-b71b5c141181)
+
