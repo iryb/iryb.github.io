@@ -18,12 +18,10 @@
   .userInfo {
     display: flex;
     align-items: center;
-    &>span {
-      padding-left: 10px;
-    }
   }
   .avatar {
     margin-bottom: 0;
+    margin-right: 10px;
   }
 }
 

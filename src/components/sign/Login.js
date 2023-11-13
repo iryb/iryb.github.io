@@ -35,7 +35,10 @@ export default function Login() {
     )
       .unwrap()
       .then(() => navigate("/"))
-      .catch(() => setError("Failed to log in"));
+      .catch(() => {
+        setLoading(false);
+        setError("Failed to log in");
+      });
   };
 
   const handleDemoLogin = (e) => {
@@ -43,8 +46,6 @@ export default function Login() {
 
     setError("");
     setLoading(true);
-
-    console.log(process.env.REACT_APP_DEMO_LOGIN_EMAIL);
 
     dispatch(
       login({
