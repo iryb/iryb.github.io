@@ -6,9 +6,10 @@ This is simple React app for task management.
 
 - React
 - Redux Toolkit
-- HTML/SCSS
 - Bootstrap
 - Firebase
+- HTML
+- SCSS
 
 ## Screenshots
 
@@ -27,12 +28,3 @@ This is simple React app for task management.
 ### Login / Sign up
 
 ![image](https://user-images.githubusercontent.com/44324806/202515471-157c8317-18aa-468c-ae0a-a25813324ac2.png)
-
-## _Latest Updates_
-
-Replaced React Context with Redux Toolkit.
-Updated styles.
-
-Tasks dashboard v1:
-
-![td-v1](https://user-images.githubusercontent.com/44324806/202513885-2afc7983-4d6e-4c81-9415-954788432485.jpg)
