@@ -35,7 +35,10 @@ export default function Login() {
     )
       .unwrap()
       .then(() => navigate("/"))
-      .catch(() => setError("Failed to log in"));
+      .catch(() => {
+        setLoading(false);
+        setError("Failed to log in");
+      });
   };
 
   const handleDemoLogin = (e) => {
